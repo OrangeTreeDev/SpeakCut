@@ -1,0 +1,244 @@
+{
+  "scenes": [
+    {
+      "index": 0,
+      "text": "最近养猪的朋友们，心是不是凉了半截？猪价跌得让人心慌，但更值得警惕的，是刚刚落下的一只“政策靴子”。",
+      "keywords_zh": ["养猪户", "猪价下跌", "政策靴子"],
+      "keywords_en": ["pig farmers", "falling pig prices", "policy shoe"],
+      "sentiment": "negative",
+      "scene_description_en": "A pig farmer looking worried with a falling price chart in the background, and a giant boot about to drop."
+    },
+    {
+      "index": 1,
+      "text": "这不仅仅是救市，这是一场针对整个养猪行业的“供给侧改革”。",
+      "keywords_zh": ["救市", "供给侧改革", "养猪行业"],
+      "keywords_en": ["market rescue", "supply-side reform", "pig industry"],
+      "sentiment": "neutral",
+      "scene_description_en": "A symbolic image of a reform stamp hitting a document with pig silhouettes."
+    },
+    {
+      "index": 2,
+      "text": "今天我们不聊表面，专门拆解这背后的深层逻辑。",
+      "keywords_zh": ["深层逻辑", "拆解", "分析"],
+      "keywords_en": ["deep logic", "analysis", "unpack"],
+      "sentiment": "neutral",
+      "scene_description_en": "A person with a magnifying glass examining a complex diagram of market mechanisms."
+    },
+    {
+      "index": 3,
+      "text": "先来看看现在的养猪行业，到底有多惨。",
+      "keywords_zh": ["养猪行业", "惨状", "现状"],
+      "keywords_en": ["pig industry", "dire situation", "current state"],
+      "sentiment": "negative",
+      "scene_description_en": "A bleak scene of a pig farm with gloomy lighting and a thermometer showing crisis level."
+    },
+    {
+      "index": 4,
+      "text": "大家想一想，刚过完年，消费一回落，猪价就直接一头栽进了“过度下跌一级预警区间”。",
+      "keywords_zh": ["消费回落", "猪价暴跌", "一级预警"],
+      "keywords_en": ["consumption drop", "pig price collapse", "level 1 alert"],
+      "sentiment": "negative",
+      "scene_description_en": "A pig price line graph plummeting into a red alert zone after the Lunar New Year."
+    },
+    {
+      "index": 5,
+      "text": "这意味着什么呢？意味着养猪已经亏到了肉里。",
+      "keywords_zh": ["亏损", "养猪", "肉里"],
+      "keywords_en": ["loss", "pig farming", "deep loss"],
+      "sentiment": "negative",
+      "scene_description_en": "A pig farmer counting losses with a sad expression, showing a bleeding piggy bank."
+    },
+    {
+      "index": 6,
+      "text": "根据2026年的最新数据，全国外三元生猪均价已经跌破了10块钱一公斤，这个价格，创下了2019年以来的新低。",
+      "keywords_zh": ["2026年数据", "外三元生猪", "10元每公斤", "新低"],
+      "keywords_en": ["2026 data", "three-way cross pig", "10 yuan per kg", "new low"],
+      "sentiment": "negative",
+      "scene_description_en": "A digital display showing pig price at 9.99 yuan/kg with a downward arrow and a historical low record."
+    },
+    {
+      "index": 7,
+      "text": "折算下来，养一头猪平均要亏掉200多块。",
+      "keywords_zh": ["亏损200元", "每头猪", "成本"],
+      "keywords_en": ["loss 200 yuan", "per pig", "cost"],
+      "sentiment": "negative",
+      "scene_description_en": "A pig with a price tag showing -200 yuan, with a farmer's distressed hand gesture."
+    },
+    {
+      "index": 8,
+      "text": "更要命的是，能繁母猪的存栏量虽然比高点降了一点，但依然在3900万头以上的高位晃悠，产能根本去不掉。",
+      "keywords_zh": ["能繁母猪", "存栏量高位", "产能过剩"],
+      "keywords_en": ["breeding sows", "high inventory", "overcapacity"],
+      "sentiment": "negative",
+      "scene_description_en": "A large number of sows in pens with a counter showing over 39 million, indicating persistent overcapacity."
+    },
+    {
+      "index": 9,
+      "text": "一边是流血不止，一边是产能过剩，这就是行业最真实的现状。",
+      "keywords_zh": ["流血不止", "产能过剩", "行业现状"],
+      "keywords_en": ["bleeding money", "overcapacity", "industry reality"],
+      "sentiment": "negative",
+      "scene_description_en": "A split screen showing a bleeding wallet on one side and a mountain of pigs on the other."
+    },
+    {
+      "index": 10,
+      "text": "那么，这次政策出手，目的到底是什么？很多朋友觉得，国家启动冻猪肉收储，就是为了托住猪价，让养猪的少亏点。",
+      "keywords_zh": ["政策目的", "冻猪肉收储", "托住猪价"],
+      "keywords_en": ["policy goal", "frozen pork reserve", "support prices"],
+      "sentiment": "neutral",
+      "scene_description_en": "A government official holding a document about frozen pork reserve, with a question mark above."
+    },
+    {
+      "index": 11,
+      "text": "这个理解只对了一半。收储确实能起到“托底”的作用，防止价格崩盘，但这只是治标。",
+      "keywords_zh": ["收储托底", "防止崩盘", "治标"],
+      "keywords_en": ["reserve as safety net", "prevent collapse", "temporary fix"],
+      "sentiment": "neutral",
+      "scene_description_en": "A safety net catching a falling pig price, but only covering the surface."
+    },
+    {
+      "index": 12,
+      "text": "真正的杀招，藏在后面的那句话里——要求养殖企业“有序调减能繁母猪存栏量”。",
+      "keywords_zh": ["杀招", "调减能繁母猪", "存栏量"],
+      "keywords_en": ["real move", "reduce breeding sows", "inventory"],
+      "sentiment": "neutral",
+      "scene_description_en": "A hidden dagger behind a document, with the text 'reduce breeding sows' highlighted."
+    },
+    {
+      "index": 13,
+      "text": "这意味着，政策的风向变了。以前是怕猪少了大家吃不起肉，现在是怕猪多了大家都没饭吃。",
+      "keywords_zh": ["政策风向", "怕猪少", "怕猪多"],
+      "keywords_en": ["policy shift", "fear of shortage", "fear of surplus"],
+      "sentiment": "neutral",
+      "scene_description_en": "A weather vane turning from 'shortage' to 'surplus' direction."
+    },
+    {
+      "index": 14,
+      "text": "这次政策的根本目的，就是要通过行政手段，强制给这个庞大的行业“减肥”。",
+      "keywords_zh": ["行政手段", "强制减肥", "行业瘦身"],
+      "keywords_en": ["administrative measures", "forced diet", "industry slimming"],
+      "sentiment": "neutral",
+      "scene_description_en": "A giant pig being put on a diet with a ruler and a government directive."
+    },
+    {
+      "index": 15,
+      "text": "大家想一想，2026年到现在，猪价已经跌成这样，但很多大企业还在硬扛，指望把别人熬死自己活下来。",
+      "keywords_zh": ["大企业", "硬扛", "熬死对手"],
+      "keywords_en": ["large enterprises", "holding on", "waiting out competitors"],
+      "sentiment": "negative",
+      "scene_description_en": "Big pig farms standing firm while smaller ones struggle, a survival-of-the-fittest scene."
+    },
+    {
+      "index": 16,
+      "text": "现在国家出手，就是明确告诉你，别再赌了，必须把母猪减下来，从源头上断掉产能扩张的念想。",
+      "keywords_zh": ["国家出手", "减母猪", "断掉产能扩张"],
+      "keywords_en": ["government action", "reduce sows", "stop capacity expansion"],
+      "sentiment": "neutral",
+      "scene_description_en": "A government hand pressing down on a lever labeled 'sow reduction' to stop a growing capacity machine."
+    },
+    {
+      "index": 17,
+      "text": "这对行业会产生什么样的影响？这影响可就深了，可以说是重塑了整个行业的游戏规则。",
+      "keywords_zh": ["行业影响", "重塑规则", "游戏规则"],
+      "keywords_en": ["industry impact", "reshape rules", "game rules"],
+      "sentiment": "neutral",
+      "scene_description_en": "A shattered old rulebook and a new one being written with 'hard constraints'."
+    },
+    {
+      "index": 18,
+      "text": "以前猪周期是市场自发的，跌多了就杀母猪，涨多了就扩产，虽然残酷但相对自由。",
+      "keywords_zh": ["猪周期", "市场自发", "杀母猪", "扩产"],
+      "keywords_en": ["pig cycle", "market-driven", "cull sows", "expand production"],
+      "sentiment": "neutral",
+      "scene_description_en": "A cyclical chart with up and down arrows, showing natural market forces."
+    },
+    {
+      "index": 19,
+      "text": "现在是什么？是“硬约束”。这次会议不仅要求减母猪，还要求控制出栏量，甚至严控生猪出栏体重在120公斤左右，严禁二次育肥。",
+      "keywords_zh": ["硬约束", "减母猪", "控制出栏量", "出栏体重120公斤", "严禁二次育肥"],
+      "keywords_en": ["hard constraints", "reduce sows", "control slaughter volume", "slaughter weight 120kg", "ban secondary fattening"],
+      "sentiment": "neutral",
+      "scene_description_en": "A set of strict rules with checkboxes: reduce sows, limit weight to 120kg, no secondary fattening."
+    },
+    {
+      "index": 20,
+      "text": "这意味着什么呢？这意味着，过去养殖户靠压栏、靠二次育肥来赌行情的操作空间，被彻底堵死了。",
+      "keywords_zh": ["压栏", "二次育肥", "赌行情", "操作空间堵死"],
+      "keywords_en": ["holding pigs", "secondary fattening", "bet on prices", "space blocked"],
+      "sentiment": "negative",
+      "scene_description_en": "A blocked road sign showing 'no holding' and 'no secondary fattening' with a dead end."
+    },
+    {
+      "index": 21,
+      "text": "大家想一想，如果大家都把猪养到150公斤甚至更重，市场上猪肉供应量就变相增加了，价格怎么可能起得来？",
+      "keywords_zh": ["150公斤", "猪肉供应量", "价格起不来"],
+      "keywords_en": ["150 kg", "pork supply", "price won't rise"],
+      "sentiment": "negative",
+      "scene_description_en": "A scale showing a pig at 150kg, with a graph of pork supply increasing and price line flat."
+    },
+    {
+      "index": 22,
+      "text": "现在政策一刀切，就是要让供给端的数据回归真实，不再被投机行为干扰。",
+      "keywords_zh": ["一刀切", "供给端", "数据真实", "投机干扰"],
+      "keywords_en": ["uniform policy", "supply side", "real data", "speculation interference"],
+      "sentiment": "neutral",
+      "scene_description_en": "A clean data screen with no interference, showing accurate supply figures."
+    },
+    {
+      "index": 23,
+      "text": "所以，对于头部企业来说，这是一道“军令状”，必须带头减产。",
+      "keywords_zh": ["头部企业", "军令状", "带头减产"],
+      "keywords_en": ["top enterprises", "military order", "lead production cuts"],
+      "sentiment": "neutral",
+      "scene_description_en": "A top pig company CEO signing a document with a stern look, a 'military order' stamp."
+    },
+    {
+      "index": 24,
+      "text": "对于那些资金链本就紧张的中小散户，这更是一个强烈的信号——不要逆势扩张，要学会跟着指挥棒走，保住现金流活下来，才是第一要务。",
+      "keywords_zh": ["中小散户", "资金链紧张", "逆势扩张", "指挥棒", "保住现金流"],
+      "keywords_en": ["small farmers", "tight cash flow", "counter-trend expansion", "follow the baton", "preserve cash flow"],
+      "sentiment": "negative",
+      "scene_description_en": "A small pig farmer looking at a baton signaling to stop expansion, with a cash flow meter in the red."
+    },
+    {
+      "index": 25,
+      "text": "最后我们来收个尾。回顾这条资讯，你会发现，现在的养猪业，早已不是那个纯粹靠天吃饭的周期行业了。",
+      "keywords_zh": ["收尾", "养猪业", "靠天吃饭", "周期行业"],
+      "keywords_en": ["conclusion", "pig industry", "weather-dependent", "cyclical industry"],
+      "sentiment": "neutral",
+      "scene_description_en": "A recap montage showing changing industry landscape, from weather vane to policy document."
+    },
+    {
+      "index": 26,
+      "text": "当政策明确要求“调减能繁母猪”的那一刻起，就意味着行业逻辑的根本转变。",
+      "keywords_zh": ["调减能繁母猪", "行业逻辑", "根本转变"],
+      "keywords_en": ["reduce breeding sows", "industry logic", "fundamental shift"],
+      "sentiment": "neutral",
+      "scene_description_en": "A pivot point where a graph changes from cyclical waves to a flat line controlled by a policy lever."
+    },
+    {
+      "index": 27,
+      "text": "国家要的是供需适配，是行业的长治久安，而不是暴涨暴跌下的投机狂欢。",
+      "keywords_zh": ["供需适配", "长治久安", "投机狂欢"],
+      "keywords_en": ["supply-demand balance", "long-term stability", "speculation frenzy"],
+      "sentiment": "positive",
+      "scene_description_en": "A balanced scale with supply and demand, against a backdrop of calm industry versus chaotic speculation party."
+    },
+    {
+      "index": 28,
+      "text": "所以，对于普通投资者或者从业者来说，看懂这层逻辑至关重要。",
+      "keywords_zh": ["投资者", "从业者", "看懂逻辑", "至关重要"],
+      "keywords_en": ["investors", "practitioners", "understand logic", "crucial"],
+      "sentiment": "neutral",
+      "scene_description_en": "A person with a lightbulb moment, looking at a clear logic diagram."
+    },
+    {
+      "index": 29,
+      "text": "不要再抱着过去“跌多了就会大涨”的惯性思维。在这一轮深度洗牌中，活下去，比赌一个大反弹，要重要得多。",
+      "keywords_zh": ["惯性思维", "跌多了就会大涨", "深度洗牌", "活下去", "赌反弹"],
+      "keywords_en": ["inertial thinking", "fall then rise", "deep reshuffle", "survive", "bet on rebound"],
+      "sentiment": "negative",
+      "scene_description_en": "A person breaking a habit of expecting a rebound, instead focusing on survival with a life raft in rough waters."
+    }
+  ]
+}
