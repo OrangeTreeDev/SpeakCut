@@ -35,10 +35,17 @@ logger = logging.getLogger("app.services.llm")
 class LLMService:
     def __init__(self) -> None:
         settings = get_settings()
+        default_headers = {}
+        if settings.llm_http_referer:
+            default_headers["HTTP-Referer"] = settings.llm_http_referer
+        if settings.llm_app_title:
+            default_headers["X-Title"] = settings.llm_app_title
+
         self.client = OpenAI(
             api_key=settings.llm_api_key,
             base_url=settings.llm_base_url,
             timeout=settings.request_timeout_sec,
+            default_headers=default_headers,
         )
         self.model = settings.llm_model
 

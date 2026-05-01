@@ -7,7 +7,7 @@ NarraClip MVP implementation for turning narration into short-form videos.
 - Frontend: React 18, TypeScript, Vite, Zustand
 - Backend: FastAPI, SQLAlchemy, SQLite
 - Video pipeline: MoviePy, FFmpeg, edge-tts
-- LLM: Zhipu OpenAI-compatible API
+- LLM: OpenRouter OpenAI-compatible API
 
 ## Quick Start
 
@@ -28,6 +28,6 @@ NarraClip MVP implementation for turning narration into short-form videos.
 
 ## Notes
 
-- Requires a reachable network for Zhipu, Pexels, Edge TTS, and Pixabay.
+- Requires a reachable network for OpenRouter, Pexels, Edge TTS, and Pixabay.
 - Requires `ffmpeg` installed and available on `PATH`.
 - Python 3.11 is the target runtime. The current machine does not yet have it installed.

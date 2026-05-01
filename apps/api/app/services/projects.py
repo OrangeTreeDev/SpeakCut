@@ -283,13 +283,47 @@ class ProjectService:
         logger.info("scene_video_update_completed project_id=%s scene_index=%s video_id=%s", project.id, scene_index, video_id)
         return project
 
-    async def export_project(self, project: Project) -> ExportJob:
+    def queue_export(self, project: Project) -> ExportJob:
+        logger.info("export_queued project_id=%s", project.id)
+        export_job = ExportJob(project_id=project.id, status="queued", progress=0.0)
+        self.db.add(export_job)
+        self.db.commit()
+        self.db.refresh(export_job)
+        return export_job
+
+    async def render_export_job(self, export_id: str) -> ExportJob | None:
+        export_job = self.db.get(ExportJob, export_id)
+        if export_job is None:
+            logger.warning("export_job_not_found export_id=%s", export_id)
+            return None
+        project = self.get_project(export_job.project_id)
+        if project is None:
+            logger.warning("export_project_not_found export_id=%s project_id=%s", export_id, export_job.project_id)
+            export_job.status = "failed"
+            export_job.error_message = "Project not found"
+            self.db.commit()
+            return export_job
+        try:
+            return await self.export_project(project, export_job)
+        except Exception as exc:
+            export_job.status = "failed"
+            export_job.error_message = str(exc)
+            self.db.commit()
+            logger.exception("export_failed project_id=%s export_id=%s", project.id, export_job.id)
+            raise
+
+    async def export_project(self, project: Project, export_job: ExportJob | None = None) -> ExportJob:
         from app.services.renderer import render_project
 
         started_at = perf_counter()
         logger.info("export_started project_id=%s", project.id)
-        export_job = ExportJob(project_id=project.id, status="rendering", progress=0.1)
-        self.db.add(export_job)
+        if export_job is None:
+            export_job = ExportJob(project_id=project.id, status="rendering", progress=0.1)
+            self.db.add(export_job)
+        else:
+            export_job.status = "rendering"
+            export_job.progress = 0.1
+            export_job.error_message = None
         self.db.commit()
         self.db.refresh(export_job)
 
@@ -312,7 +346,8 @@ class ProjectService:
             )
             logger.info("export_scene_prepared project_id=%s scene_index=%s", project.id, scene.idx)
 
-        render_project(
+        await asyncio.to_thread(
+            render_project,
             project.id,
             project.aspect_ratio,
             prepared_scenes,

@@ -7,6 +7,7 @@ interface ProjectState {
   activeSceneIndex: number;
   isLoading: boolean;
   isRefreshing: boolean;
+  isExporting: boolean;
   error: string | null;
   exportUrl: string | null;
   loadProject: (projectId: string, options?: { silent?: boolean }) => Promise<void>;
@@ -23,6 +24,7 @@ export const useProjectStore = create<ProjectState>((set) => ({
   activeSceneIndex: 0,
   isLoading: false,
   isRefreshing: false,
+  isExporting: false,
   error: null,
   exportUrl: null,
   async loadProject(projectId, options) {
@@ -67,7 +69,22 @@ export const useProjectStore = create<ProjectState>((set) => ({
     set({ project });
   },
   async exportProject(projectId) {
-    const response = await api.exportProject(projectId);
-    set({ exportUrl: response.download_url ?? null });
+    set({ isExporting: true, error: null, exportUrl: null });
+    try {
+      let response = await api.exportProject(projectId);
+      while (response.status === "queued" || response.status === "rendering") {
+        await new Promise((resolve) => window.setTimeout(resolve, 2500));
+        response = await api.getExport(response.export_id);
+      }
+      if (response.status === "failed") {
+        throw new Error(response.error_message ?? "Export failed");
+      }
+      set({ exportUrl: response.download_url ?? null, isExporting: false });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : "Export failed",
+        isExporting: false,
+      });
+    }
   },
 }));

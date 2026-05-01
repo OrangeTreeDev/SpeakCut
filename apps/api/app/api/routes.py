@@ -41,6 +41,19 @@ async def generate_project_in_background(project_id: str) -> None:
         db.close()
 
 
+async def export_project_in_background(export_id: str) -> None:
+    db = SessionLocal()
+    try:
+        logger.info("background_export_started export_id=%s", export_id)
+        service = ProjectService(db)
+        await service.render_export_job(export_id)
+        logger.info("background_export_completed export_id=%s", export_id)
+    except Exception:
+        logger.exception("background_export_failed export_id=%s", export_id)
+    finally:
+        db.close()
+
+
 def serialize_project(project: Project) -> ProjectResponse:
     scenes = sorted(project.scenes, key=lambda row: row.idx)
     return ProjectResponse(
@@ -221,16 +234,21 @@ async def search_materials(
 
 
 @router.post("/projects/{project_id}/export", response_model=ExportResponse)
-async def export_project(project_id: str, db: Session = Depends(get_db)) -> ExportResponse:
+async def export_project(
+    project_id: str,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+) -> ExportResponse:
     logger.info("export_project_requested project_id=%s", project_id)
     service = ProjectService(db)
     project = service.get_project(project_id)
     if project is None:
         logger.warning("export_project_not_found project_id=%s", project_id)
         raise HTTPException(status_code=404, detail="Project not found")
-    export_job = await service.export_project(project)
-    logger.info("export_project_completed project_id=%s export_id=%s", project_id, export_job.id)
-    return ExportResponse(export_id=export_job.id, status=export_job.status, estimated_time_sec=30, download_url=export_job.download_url)
+    export_job = service.queue_export(project)
+    background_tasks.add_task(export_project_in_background, export_job.id)
+    logger.info("export_project_queued project_id=%s export_id=%s", project_id, export_job.id)
+    return ExportResponse(export_id=export_job.id, status=export_job.status, estimated_time_sec=120)
 
 
 @router.get("/exports/{export_id}", response_model=ExportResponse)

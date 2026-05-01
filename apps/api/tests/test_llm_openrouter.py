@@ -8,7 +8,7 @@ from app.services.llm import LLMService
 
 
 def _get_api_key() -> str:
-    env_key = os.getenv("LLM_API_KEY") or os.getenv("ZHIPU_API_KEY")
+    env_key = os.getenv("LLM_API_KEY") or os.getenv("OPENROUTER_API_KEY")
     if env_key:
         return env_key
 
@@ -16,10 +16,10 @@ def _get_api_key() -> str:
 
 
 @pytest.mark.integration
-def test_zhipu_llm_analyze_narration_returns_scenes(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_openrouter_llm_analyze_narration_returns_scenes(monkeypatch: pytest.MonkeyPatch) -> None:
     api_key = _get_api_key()
     if not api_key:
-        pytest.skip("Set LLM_API_KEY or ZHIPU_API_KEY to run the Zhipu LLM integration test.")
+        pytest.skip("Set LLM_API_KEY or OPENROUTER_API_KEY to run the OpenRouter LLM integration test.")
 
     monkeypatch.setenv("LLM_API_KEY", api_key)
     settings = Settings()

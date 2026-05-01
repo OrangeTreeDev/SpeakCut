@@ -18,7 +18,7 @@ class TTSService:
             output_audio_path.name,
             len(text),
         )
-        communicate = edge_tts.Communicate(text=text, voice=voice_id, rate="+0%", pitch="+0Hz")
+        communicate = edge_tts.Communicate(text=text, voice=voice_id, rate="+0%", pitch="+0Hz", boundary="WordBoundary")
         word_boundaries: list[dict] = []
         total_duration_ms = 0
 

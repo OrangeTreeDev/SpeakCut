@@ -8,6 +8,8 @@
     "dev:web": "npm --workspace apps/web run dev",
     "build:web": "npm --workspace apps/web run build",
     "test:web": "npm --workspace apps/web run test -- --run"
+  },
+  "dependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2"
   }
 }
-

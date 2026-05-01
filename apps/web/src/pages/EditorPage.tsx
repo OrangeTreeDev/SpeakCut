@@ -17,6 +17,7 @@ export function EditorPage() {
     error,
     exportUrl,
     exportProject,
+    isExporting,
     isLoading,
     isRefreshing,
     loadProject,
@@ -68,7 +69,7 @@ export function EditorPage() {
           : project.status === "regenerating_all"
             ? "全局重建中"
             : "生成中";
-  const apiOrigin = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+  const apiOrigin = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
 
   return (
     <main className="h-[100svh] overflow-hidden px-3 py-3 md:px-5 md:py-5">
@@ -109,9 +110,9 @@ export function EditorPage() {
                 </a>
               </Button>
             ) : null}
-            <Button size="sm" disabled={isGenerating} className="min-w-[112px]" onClick={() => void exportProject(project.project_id)}>
-              <Download className="size-4" />
-              导出项目
+            <Button size="sm" disabled={isGenerating || isExporting} className="min-w-[112px]" onClick={() => void exportProject(project.project_id)}>
+              {isExporting ? <RefreshCw className="size-4 animate-spin" /> : <Download className="size-4" />}
+              {isExporting ? "导出中" : "导出项目"}
             </Button>
           </div>
         </header>

@@ -1,6 +1,14 @@
 import type { Project, ProjectSummary } from "./types";
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000") + "/api/v1";
+const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+const API_BASE = `${API_ORIGIN}/api/v1`;
+
+export interface ExportStatus {
+  export_id: string;
+  status: string;
+  download_url?: string | null;
+  error_message?: string | null;
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {
@@ -62,8 +70,11 @@ export const api = {
     });
   },
   exportProject(projectId: string) {
-    return request<{ export_id: string; status: string; download_url?: string }>(`/projects/${projectId}/export`, {
+    return request<ExportStatus>(`/projects/${projectId}/export`, {
       method: "POST",
     });
+  },
+  getExport(exportId: string) {
+    return request<ExportStatus>(`/exports/${exportId}`);
   },
 };

@@ -21,7 +21,7 @@ interface PreviewPanelProps {
   onNextScene: () => void;
 }
 
-const API_ORIGIN = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
 
 export function PreviewPanel({
   scene,
