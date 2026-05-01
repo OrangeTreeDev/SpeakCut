@@ -1,4 +1,4 @@
-import { ImageIcon, Search, Type, Wand2 } from "lucide-react";
+import { ImageIcon, Search, Type, Upload, Wand2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { Project, Scene } from "../lib/types";
 import { cn } from "../lib/utils";
@@ -30,7 +30,7 @@ const voiceOptions = [
 const tabs: Array<{ key: TabKey; label: string; icon: typeof ImageIcon }> = [
   { key: "materials", label: "素材", icon: ImageIcon },
   { key: "subtitle", label: "字幕", icon: Type },
-  { key: "voice", label: "音色", icon: Wand2 },
+  { key: "voice", label: "音频", icon: Wand2 },
 ];
 
 export function InspectorPanel({ project, scene, isGenerating, onSwitchVideo, onUpdateSubtitle, onSwitchVoice }: InspectorPanelProps) {
@@ -55,16 +55,8 @@ export function InspectorPanel({ project, scene, isGenerating, onSwitchVideo, on
   }, [materialQuery, scene]);
 
   return (
-    <aside className="panel-surface flex h-full min-h-0 flex-col rounded-[1.65rem] border border-white/[0.05] p-4">
-      <div className="mb-4 flex items-center justify-between gap-3 border-b border-white/[0.06] pb-4">
-        <div>
-          <h2 className="text-base font-semibold tracking-[-0.02em] text-white">检查器</h2>
-          <p className="text-sm text-muted">当前分镜的素材、字幕和音色都在这里切换</p>
-        </div>
-        {isGenerating ? <Badge className="border border-white/[0.06]">生成中</Badge> : null}
-      </div>
-
-      <div className="mb-4 grid grid-cols-3 gap-1.5 rounded-[1.2rem] border border-white/[0.06] bg-black/16 p-1">
+    <aside className="hidden h-full min-h-0 flex-col border-l border-white/[0.05] bg-[#121212] xl:flex">
+      <div className="grid h-20 shrink-0 grid-cols-3 border-b border-white/[0.05] bg-[#181818]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -72,66 +64,72 @@ export function InspectorPanel({ project, scene, isGenerating, onSwitchVideo, on
               key={tab.key}
               type="button"
               className={cn(
-                "flex flex-col items-center justify-center gap-1 rounded-[0.95rem] px-2 py-2.5 text-[11px] font-medium transition",
+                "relative flex items-center justify-center gap-2 px-3 text-base transition",
                 activeTab === tab.key
-                  ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.09),rgba(255,255,255,0.04))] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-                  : "text-muted hover:bg-white/[0.04] hover:text-white",
+                  ? "font-bold text-white after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-[#1ed760]"
+                  : "text-zinc-400 hover:text-white",
               )}
               onClick={() => setActiveTab(tab.key)}
             >
-              <Icon className="size-4" />
+              <Icon className="hidden size-4 2xl:block" />
               {tab.label}
             </button>
           );
         })}
       </div>
 
-      <ScrollArea className="min-h-0 flex-1 pr-2">
+      <ScrollArea className="min-h-0 flex-1">
         {activeTab === "materials" ? (
-          <section className="space-y-4">
-            <div className="rounded-[1.2rem] border border-white/[0.06] bg-white/[0.02] p-3">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
-                <Input
-                  value={materialQuery}
-                  onChange={(event) => setMaterialQuery(event.currentTarget.value)}
-                  placeholder="搜索素材编号、时长、横竖屏"
-                  className="border-white/[0.08] bg-white/[0.03] pl-9"
-                />
-              </div>
+          <section className="space-y-7 p-5">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
+              <Input
+                value={materialQuery}
+                onChange={(event) => setMaterialQuery(event.currentTarget.value)}
+                placeholder="搜索素材..."
+                className="h-11 rounded-full border-white/30 bg-[#1f1f1f] pl-12 text-base text-white placeholder:text-zinc-400 focus-visible:ring-[#1ed760]"
+              />
             </div>
 
-            {!scene ? <p className="text-sm text-muted">等待分镜生成后即可查看和替换素材。</p> : null}
-            {scene && filteredVideos.length === 0 ? <p className="text-sm text-muted">没有匹配的候选素材。</p> : null}
+            <div>
+              <div className="mb-4 flex justify-between">
+                <h3 className="text-lg font-semibold text-white">近期素材</h3>
+                {isGenerating ? <Badge className="border border-white/[0.06] bg-[#1f1f1f] text-zinc-300">生成中</Badge> : null}
+              </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              {filteredVideos.map((video) => (
-                <button
-                  key={video.id}
-                  type="button"
-                  disabled={isGenerating}
-                  className="overflow-hidden rounded-[1.2rem] border border-white/[0.06] bg-white/[0.02] text-left transition duration-200 hover:border-white/[0.1] hover:bg-white/[0.04] disabled:cursor-not-allowed"
-                  onClick={() => scene && void onSwitchVideo(scene.index, video.id)}
-                >
-                  <img src={video.thumbnail} alt="" className="aspect-[4/3] w-full object-cover" />
-                  <div className="space-y-1.5 px-3 py-3">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-white">素材 #{video.id}</span>
-                      <span className="text-muted">{video.duration}s</span>
-                    </div>
-                    <div className="text-[11px] text-muted">{video.height >= video.width ? "竖屏素材" : "横屏素材"}</div>
-                  </div>
+              {!scene ? <p className="text-sm text-zinc-400">等待分镜生成后即可查看和替换素材。</p> : null}
+              {scene && filteredVideos.length === 0 ? <p className="text-sm text-zinc-400">没有匹配的候选素材。</p> : null}
+
+              <div className="grid grid-cols-2 gap-3">
+                {filteredVideos.slice(0, 8).map((video) => (
+                  <button
+                    key={video.id}
+                    type="button"
+                    disabled={isGenerating}
+                    className="group relative aspect-square overflow-hidden rounded-lg bg-[#272727] text-left transition disabled:cursor-not-allowed"
+                    onClick={() => scene && void onSwitchVideo(scene.index, video.id)}
+                  >
+                    <img src={video.thumbnail} alt="" className="h-full w-full object-cover opacity-70 transition group-hover:scale-[1.03] group-hover:opacity-100" />
+                    <span className="absolute bottom-1 right-1 rounded bg-black/65 px-1.5 py-0.5 font-mono text-[10px] text-white">{video.duration}s</span>
+                  </button>
+                ))}
+
+                <button type="button" className="grid aspect-square place-items-center rounded-lg border border-dashed border-white/20 bg-[#1f1f1f] text-zinc-400 transition hover:border-white/45 hover:text-white">
+                  <span className="grid justify-items-center gap-2 text-xs">
+                    <Upload className="size-6" />
+                    上传
+                  </span>
                 </button>
-              ))}
+              </div>
             </div>
           </section>
         ) : null}
 
         {activeTab === "subtitle" ? (
-          <section className="space-y-4">
-            <div className="rounded-[1.25rem] border border-white/[0.06] bg-white/[0.02] p-4">
+          <section className="space-y-4 p-5">
+            <div className="rounded-lg border border-white/[0.06] bg-[#181818] p-4">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted">字号</span>
+                <span className="text-zinc-400">字号</span>
                 <span className="text-white">{project.subtitle_style.font_size}px</span>
               </div>
               <Slider
@@ -149,9 +147,9 @@ export function InspectorPanel({ project, scene, isGenerating, onSwitchVideo, on
               />
             </div>
 
-            <div className="rounded-[1.25rem] border border-white/[0.06] bg-white/[0.02] p-4">
+            <div className="rounded-lg border border-white/[0.06] bg-[#181818] p-4">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted">字幕颜色</span>
+                <span className="text-zinc-400">字幕颜色</span>
                 <span className="font-mono text-xs text-white">{project.subtitle_style.color}</span>
               </div>
               <div className="mt-3 flex items-center gap-3">
@@ -176,14 +174,14 @@ export function InspectorPanel({ project, scene, isGenerating, onSwitchVideo, on
                       color: event.currentTarget.value,
                     })
                   }
-                  className="border-white/[0.08] bg-white/[0.03]"
+                  className="border-white/[0.08] bg-[#1f1f1f]"
                 />
               </div>
             </div>
 
-            <div className="rounded-[1.25rem] border border-white/[0.06] bg-white/[0.02] p-4">
+            <div className="rounded-lg border border-white/[0.06] bg-[#181818] p-4">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted">描边宽度</span>
+                <span className="text-zinc-400">描边宽度</span>
                 <span className="text-white">{project.subtitle_style.stroke_width}px</span>
               </div>
               <Slider
@@ -204,11 +202,11 @@ export function InspectorPanel({ project, scene, isGenerating, onSwitchVideo, on
         ) : null}
 
         {activeTab === "voice" ? (
-          <section className="space-y-3">
-            <div className="rounded-[1.25rem] border border-white/[0.06] bg-white/[0.02] p-4">
-              <p className="mb-3 text-sm text-muted">切换后会对当前项目重新生成配音。</p>
+          <section className="space-y-3 p-5">
+            <div className="rounded-lg border border-white/[0.06] bg-[#181818] p-4">
+              <p className="mb-3 text-sm text-zinc-400">切换后会对当前项目重新生成配音。</p>
               <Select disabled={isGenerating} value={project.voice_id} onValueChange={(value) => void onSwitchVoice(value)}>
-                <SelectTrigger aria-label="编辑器音色选择" className="border-white/[0.08] bg-white/[0.03]">
+                <SelectTrigger aria-label="编辑器音色选择" className="border-white/[0.08] bg-[#1f1f1f]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

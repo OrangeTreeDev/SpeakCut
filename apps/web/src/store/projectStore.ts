@@ -77,12 +77,12 @@ export const useProjectStore = create<ProjectState>((set) => ({
         response = await api.getExport(response.export_id);
       }
       if (response.status === "failed") {
-        throw new Error(response.error_message ?? "Export failed");
+        throw new Error(response.error_message ?? "导出失败");
       }
       set({ exportUrl: response.download_url ?? null, isExporting: false });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Export failed",
+        error: error instanceof Error ? error.message : "导出失败",
         isExporting: false,
       });
     }

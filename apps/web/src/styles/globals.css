@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0d0914;
-  --color-foreground: #f4f0ff;
-  --color-card: rgba(20, 14, 34, 0.78);
-  --color-card-foreground: #f4efff;
-  --color-muted: #998dbb;
-  --color-muted-foreground: #998dbb;
-  --color-border: rgba(211, 197, 255, 0.1);
-  --color-input: rgba(211, 197, 255, 0.1);
-  --color-primary: #b78cff;
-  --color-primary-foreground: #170d27;
-  --color-secondary: #221633;
-  --color-secondary-foreground: #f0e9ff;
-  --color-accent: #2d1d45;
-  --color-accent-foreground: #f5efff;
-  --color-destructive: #ff6b82;
+  --color-background: #121212;
+  --color-foreground: #ffffff;
+  --color-card: #181818;
+  --color-card-foreground: #ffffff;
+  --color-muted: #b3b3b3;
+  --color-muted-foreground: #b3b3b3;
+  --color-border: #4d4d4d;
+  --color-input: #7c7c7c;
+  --color-primary: #1ed760;
+  --color-primary-foreground: #000000;
+  --color-secondary: #1f1f1f;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #272727;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #f3727f;
   --radius-xl: 1.5rem;
   --radius-2xl: 1.75rem;
-  --font-sans: "Satoshi", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Helvetica Neue", helvetica, arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 @layer base {
@@ -28,11 +28,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background-image:
-      radial-gradient(circle at top left, rgba(159, 104, 255, 0.18), transparent 24%),
-      radial-gradient(circle at 82% 10%, rgba(86, 183, 255, 0.09), transparent 18%),
-      radial-gradient(circle at 50% 100%, rgba(114, 65, 219, 0.24), transparent 32%),
-      linear-gradient(180deg, #120d1d 0%, #09070f 100%);
+    background: #121212;
     min-height: 100vh;
   }
 
@@ -44,22 +40,21 @@
   }
 
   ::selection {
-    background: rgba(169, 112, 255, 0.32);
+    background: rgba(30, 215, 96, 0.32);
   }
 }
 
 @layer utilities {
   .glass {
-    @apply border border-border bg-card shadow-[0_30px_90px_rgba(4,3,10,0.34)] backdrop-blur-xl;
+    @apply bg-card shadow-[0_0_24px_rgba(0,0,0,0.5)];
   }
 
   .subtle-copy {
-    @apply text-sm leading-6 text-muted;
+    @apply text-sm text-muted;
   }
 
   .panel-surface {
-    background:
-      linear-gradient(180deg, rgba(26, 18, 40, 0.95) 0%, rgba(15, 10, 25, 0.94) 100%);
+    background: #181818;
   }
 
   .editor-grid {
@@ -76,22 +71,19 @@
   }
 
   .workspace-shell {
-    background:
-      linear-gradient(180deg, rgba(21, 15, 33, 0.92) 0%, rgba(12, 9, 20, 0.9) 100%);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 36px 120px rgba(1, 0, 8, 0.42);
+    background: #181818;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
   }
 
   .surface-divider {
-    @apply border border-white/[0.06] bg-white/[0.02];
+    @apply bg-[#1f1f1f];
   }
 
   .status-dot {
-    box-shadow: 0 0 0 6px rgba(183, 140, 255, 0.08);
+    box-shadow: 0 0 0 6px rgba(30, 215, 96, 0.08);
   }
 
   .text-glow {
-    text-shadow: 0 0 28px rgba(183, 140, 255, 0.25);
+    text-shadow: none;
   }
 }

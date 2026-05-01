@@ -4,14 +4,14 @@ import { Slot } from "@radix-ui/react-slot";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-bold transition disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-[#1ed760]/30 focus-visible:ring-offset-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-[0_12px_30px_rgba(169,112,255,0.34)] hover:brightness-110",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-accent",
-        ghost: "bg-transparent text-foreground hover:bg-white/6",
-        outline: "border border-border bg-white/5 text-foreground hover:bg-white/10",
+        default: "bg-[#1ed760] text-black shadow-[0_0_24px_rgba(0,0,0,0.5)] hover:bg-[#1db954]",
+        secondary: "bg-[#1f1f1f] text-white hover:bg-[#272727]",
+        ghost: "bg-transparent text-white hover:bg-white/[0.06]",
+        outline: "border border-[#7c7c7c] bg-transparent text-white hover:bg-white/[0.08]",
       },
       size: {
         default: "h-11 px-5",

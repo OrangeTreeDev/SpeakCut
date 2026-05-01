@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SpeakCut - Projects</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#4a4949",
+                    "tertiary-fixed": "#ffdbcf",
+                    "separator": "#b3b3b3",
+                    "secondary-fixed": "#e5e2e1",
+                    "outline-variant": "#3c4a3c",
+                    "on-primary-fixed": "#002108",
+                    "text-near-white": "#cbcbcb",
+                    "text-secondary": "#b3b3b3",
+                    "primary-container": "#1ed760",
+                    "on-secondary-fixed-variant": "#474646",
+                    "surface-container-lowest": "#081008",
+                    "near-black": "#121212",
+                    "text-warning": "#ffa42b",
+                    "surface-bright": "#333b32",
+                    "text-base": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "surface-container": "#192219",
+                    "surface-container-highest": "#2e372e",
+                    "outline": "#859583",
+                    "primary-fixed": "#69ff89",
+                    "secondary": "#c8c6c5",
+                    "mid-dark": "#1f1f1f",
+                    "mid-card": "#272727",
+                    "text-negative": "#f3727f",
+                    "on-error-container": "#ffdad6",
+                    "dark-card": "#252525",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-tertiary-fixed": "#380d00",
+                    "border-light": "#7c7c7c",
+                    "on-primary-container": "#005721",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "border-gray": "#4d4d4d",
+                    "text-announcement": "#539df5",
+                    "on-primary": "#003913",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#bbcbb8",
+                    "inverse-on-surface": "#2a3329",
+                    "background": "#0d150d",
+                    "tertiary": "#ffccbb",
+                    "surface-dim": "#0d150d",
+                    "inverse-primary": "#006e2c",
+                    "on-surface": "#dce5d8",
+                    "on-tertiary-container": "#793820",
+                    "on-tertiary-fixed-variant": "#73341c",
+                    "on-error": "#690005",
+                    "error-container": "#93000a",
+                    "dark-surface": "#181818",
+                    "surface-variant": "#2e372e",
+                    "on-secondary": "#313030",
+                    "inverse-surface": "#dce5d8",
+                    "surface-container-low": "#151e15",
+                    "tertiary-container": "#ffa585",
+                    "on-tertiary": "#571f08",
+                    "on-primary-fixed-variant": "#00531f",
+                    "primary": "#4cf479",
+                    "on-background": "#dce5d8",
+                    "text-light": "#fdfdfd",
+                    "green-accent-alt": "#1db954",
+                    "surface": "#0d150d",
+                    "surface-tint": "#34e36a",
+                    "primary-fixed-dim": "#34e36a",
+                    "surface-container-high": "#232c23",
+                    "on-secondary-container": "#bab8b7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "player-height": "90px",
+                    "xs": "4px",
+                    "sidebar-width": "240px",
+                    "base": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "section-title": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "nav-active": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "nav-inactive": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-bold": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "micro": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "metadata": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "small-tag": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "feature-heading": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "button-label-uppercase": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-standard": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "section-title": [
+                            "24px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "nav-active": [
+                            "14px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "nav-inactive": [
+                            "14px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-bold": [
+                            "16px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "micro": [
+                            "10px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "metadata": [
+                            "14px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "small-tag": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "feature-heading": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "button-label-uppercase": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "1.5px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-standard": [
+                            "16px",
+                            {
+                                    "lineHeight": "normal",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+</head>
+<body class="bg-near-black text-text-base font-body-standard antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full flex flex-col w-64 border-r border-white/5 bg-near-black shadow-2xl z-40 hidden md:flex font-['Plus_Jakarta_Sans'] text-sm tracking-tight text-[#1ed760]">
+<div class="py-8 px-6">
+<h1 class="text-2xl font-bold text-white tracking-tighter">SpeakCut</h1>
+</div>
+<div class="flex-1 flex flex-col gap-2 px-4 mt-2">
+<a class="flex items-center gap-3 text-zinc-400 font-medium hover:text-white px-4 py-2 transition-colors hover:bg-zinc-800/50 rounded-full scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-3 text-white font-bold bg-zinc-800 rounded-full px-4 py-2 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="video_library" data-weight="fill" style="font-variation-settings: 'FILL' 1;">video_library</span>
+<span>Projects</span>
+</a>
+</div>
+<div class="mt-auto p-4 mb-4">
+<div class="flex items-center gap-3 p-2 hover:bg-zinc-800/50 rounded-lg cursor-pointer transition-colors">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">S</div>
+<div>
+<h2 class="text-sm font-bold text-white tracking-tighter">SpeakCut User</h2>
+<p class="text-xs text-zinc-400">Pro Production</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 min-h-screen p-8 bg-near-black">
+<!-- Header & Filters -->
+<div class="flex flex-col gap-md mb-8">
+<h1 class="font-section-title text-section-title text-text-base">Projects</h1>
+<div class="flex gap-sm">
+<button class="px-6 py-2 bg-white text-near-black rounded-full font-body-bold text-body-bold hover:scale-105 transition-transform">All</button>
+<button class="px-6 py-2 bg-mid-dark text-text-near-white rounded-full font-body-bold text-body-bold hover:bg-zinc-800 hover:text-white transition-colors border border-transparent hover:border-border-gray">Recent</button>
+<button class="px-6 py-2 bg-mid-dark text-text-near-white rounded-full font-body-bold text-body-bold hover:bg-zinc-800 hover:text-white transition-colors border border-transparent hover:border-border-gray">Drafts</button>
+</div>
+</div>
+<!-- Project Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-lg">
+<!-- New Project Card Placeholder -->
+<button class="group flex flex-col items-center justify-center h-64 rounded-lg border-2 border-dashed border-border-light hover:border-primary-container bg-dark-surface hover:bg-mid-card transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-mid-dark group-hover:bg-primary-container flex items-center justify-center transition-colors mb-4 shadow-[0_0_0_1px_inset_#7c7c7c]">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-on-primary-container text-3xl" data-icon="add">add</span>
+</div>
+<span class="font-body-bold text-body-bold text-text-secondary group-hover:text-white">Create New Project</span>
+</button>
+<!-- Project Card 1 -->
+<div class="group flex flex-col bg-dark-surface rounded-lg overflow-hidden hover:bg-mid-card hover:shadow-[rgba(0,0,0,0.3)_0px_8px_8px] transition-all duration-300 cursor-pointer">
+<div class="relative h-40 w-full overflow-hidden bg-mid-dark">
+<img alt="Cinematic thumbnail of a dark, moody cityscape at night" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105" data-alt="A cinematic, moody thumbnail image of a cyberpunk-inspired dark cityscape at night. Neon lights subtly reflect off wet pavement in the foreground. The overall palette is dominated by deep blacks, dark greys, and striking accents of cyan and vivid magenta. The mood is atmospheric, premium, and intense, fitting seamlessly into a high-end, dark-mode audio/video production interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBudbfTO239wuiMqb932kULVGmNngIPiG8Bgw_VjFZyT8XJu7pZG2RmPFO8YmcCbBcK1m-kDwi9_Ag3QtI2AcRQA17wM4smzk7JQbNXxLsQvsBx3wIahVzYsexSVZXbQhRHV60NeiR_GR38fvPqFR4RfIdG6lJFLZueHJ4YbvB7gAVGiQAlRoXvEM-i1U7Mt6ZicXBC7b69YXcPdgT-VH-4taL4l-E5-FImuJO0x5SUxrTQBcivqjNFGCHm8W4z6HCXohLllVkqo8I"/>
+<div class="absolute inset-0 bg-gradient-to-t from-near-black/80 to-transparent"></div>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface-container-highest/80 backdrop-blur-sm rounded-md font-small-tag text-small-tag text-text-near-white flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                        Completed
+                    </div>
+<!-- Hover Play Button -->
+<button class="absolute bottom-4 right-4 w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-near-black opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-10 hover:scale-105">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h3 class="font-body-bold text-body-bold text-text-base truncate group-hover:text-primary-container transition-colors">Neon Nights Campaign</h3>
+<p class="font-metadata text-metadata text-text-secondary">Oct 24, 2023 • 02:45</p>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="group flex flex-col bg-dark-surface rounded-lg overflow-hidden hover:bg-mid-card hover:shadow-[rgba(0,0,0,0.3)_0px_8px_8px] transition-all duration-300 cursor-pointer">
+<div class="relative h-40 w-full overflow-hidden bg-mid-dark">
+<img alt="Abstract fluid art in dark greens and blacks" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105" data-alt="A mesmerizing abstract fluid art composition featuring swirls of deep forest green, charcoal black, and subtle silver metallic highlights. The lighting is soft and diffused, highlighting the glossy texture of the fluid medium. The color palette perfectly complements a premium, dark-mode software aesthetic, using rich, dark tones to create depth and focus. The mood is sophisticated and contemporary." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd59nweHgxAi7hq7JSYMe_IZdt4_L96qOahXfiYN5gMg0-B06kJ5nwolLF2tzLb_0nzduJ88SoQbfh6vmG8nQZig6wDUL5Wh78BGpI_5_o-aF1fiPmtdWCcsiozH1jbmlY9Nq38jxRkLaJF_9i0lgQgN6ZkzDqNWJJ9UIRzhwjanzLE8VJs65ekpLL-D-yi0UkPhxESI8GZwgOxkAZfKny1YjF5_MaZ3lykF5CcNyCAFgmseviqVU_yK08OM60ZJdmIOkOyKyMEq4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-near-black/80 to-transparent"></div>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface-container-highest/80 backdrop-blur-sm rounded-md font-small-tag text-small-tag text-text-warning flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-text-warning"></span>
+                        In Progress
+                    </div>
+<button class="absolute bottom-4 right-4 w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-near-black opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-10 hover:scale-105">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h3 class="font-body-bold text-body-bold text-text-base truncate group-hover:text-primary-container transition-colors">Echoes Podcast S2</h3>
+<p class="font-metadata text-metadata text-text-secondary">Nov 02, 2023 • 45:12</p>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="group flex flex-col bg-dark-surface rounded-lg overflow-hidden hover:bg-mid-card hover:shadow-[rgba(0,0,0,0.3)_0px_8px_8px] transition-all duration-300 cursor-pointer">
+<div class="relative h-40 w-full overflow-hidden bg-mid-dark">
+<img alt="Minimalist geometric shapes in low light" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105" data-alt="A minimalist architectural visualization featuring bold geometric shapes in an extremely low-light environment. Strong, dramatic shadows are cast by a single, unseen cool-white light source, creating deep contrast against the pitch-black background. The materials appear matte and premium, like dark concrete or slate. The visual style is austere, tactile, and perfectly aligned with a high-end dark compression interface philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDORf_Wcv-JpZJ-AXfMplQ1RNvWUC5JDSik9-3eT69hcwo9UcKZ-IUmbF0TY1-hry4bWcObVu63Td_hkqn1IqD9QY9jCYXjJu5wwlVP3W6BUiguWQ-3b1b-V7l8Newex12xDsoSU9HREAjFkIaXlkcVL1dbmppq1ZFHd26Hix4tOgLPeuRRU8PpDgV5KrZxnRMLlgwlvR-IBfJywsom995WIhs-fesq60B2ChkweAT-IRzSubbJoIyrV44ocEzYFe9iIHb0BjdVzJk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-near-black/80 to-transparent"></div>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface-container-highest/80 backdrop-blur-sm rounded-md font-small-tag text-small-tag text-text-near-white flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-separator"></span>
+                        Draft
+                    </div>
+<button class="absolute bottom-4 right-4 w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-near-black opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-10 hover:scale-105">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h3 class="font-body-bold text-body-bold text-text-base truncate group-hover:text-primary-container transition-colors">Brand Anthem Reel</h3>
+<p class="font-metadata text-metadata text-text-secondary">Nov 10, 2023 • 01:15</p>
+</div>
+</div>
+<!-- Project Card 4 -->
+<div class="group flex flex-col bg-dark-surface rounded-lg overflow-hidden hover:bg-mid-card hover:shadow-[rgba(0,0,0,0.3)_0px_8px_8px] transition-all duration-300 cursor-pointer">
+<div class="relative h-40 w-full overflow-hidden bg-mid-dark">
+<img alt="Dark studio equipment setup" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105" data-alt="A close-up, macro shot of high-end audio mixing equipment in a dark recording studio. The focus is tight on a sleek, matte black physical dial with a subtle glowing green indicator ring. The background falls off into deep, soft bokeh, obscuring the rest of the dark console. The lighting is moody and intimate, emphasizing the tactile, hardware-inspired aesthetic of the global UI system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ7pZujmA1R1Xnjq-6kVQWXaoxiylWrUz5FJnQ4XbFEE6oNcSxGW9Kr5fjhsH26B2OBaRZTmmrtVk4icAxwJnkFHCx_C3PGRvHrPj2AIuUwfz_R-kCr-ZcqOX5hjJF_zKmKbq3mM7PM7FXdtVOO6WyoLXa2HYmYyHSC0FGr6IPnusom5b-wvXDbWlptG1PC6o1Cd6ScqTvJelpHFR7NHeYZDnsL0cDawcvbFMhRC_-XiNORDLSkqy2UAIK1bfyIoSI6PgUUOmfic0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-near-black/80 to-transparent"></div>
+<div class="absolute top-2 right-2 px-2 py-1 bg-surface-container-highest/80 backdrop-blur-sm rounded-md font-small-tag text-small-tag text-text-near-white flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                        Completed
+                    </div>
+<button class="absolute bottom-4 right-4 w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-near-black opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-10 hover:scale-105">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h3 class="font-body-bold text-body-bold text-text-base truncate group-hover:text-primary-container transition-colors">Soundscape Vol 4</h3>
+<p class="font-metadata text-metadata text-text-secondary">Sep 15, 2023 • 12:30</p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

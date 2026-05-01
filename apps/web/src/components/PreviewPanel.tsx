@@ -1,9 +1,6 @@
-import { Pause, Play, SkipBack, SkipForward, Type, Volume2 } from "lucide-react";
+import { Maximize, Pause, Play, SkipBack, SkipForward } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Scene } from "../lib/types";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Card, CardContent } from "./ui/card";
 
 interface PreviewPanelProps {
   scene: Scene | undefined;
@@ -87,110 +84,78 @@ export function PreviewPanel({
 
   if (!scene) {
     return (
-      <Card className="h-full rounded-[1.7rem] border-white/[0.06] bg-transparent">
-        <CardContent className="grid h-full gap-5 p-6">
-          <div className="flex items-center justify-between">
+      <section className="grid h-full min-h-0 place-items-center overflow-hidden bg-[#121212] p-6">
+        <div className="grid aspect-[9/16] h-full max-h-[716px] min-h-[360px] place-items-center rounded-lg bg-[#0b0b0b] p-8 text-center shadow-[inset_0_0_0_1px_#4d4d4d,0_0_24px_rgba(0,0,0,0.5)]">
+          <div className="space-y-4">
+            <div className="mx-auto grid size-20 place-items-center rounded-full bg-[#1ed760] text-black">
+              <Play className="ml-1 size-8" />
+            </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">视频预览</h2>
-              <p className="text-sm text-muted">等待首个分镜进入可视区域</p>
-            </div>
-            {isGenerating ? <Badge>等待首个分镜</Badge> : null}
-          </div>
-
-          <div className="editor-grid grid flex-1 place-items-center rounded-[1.75rem] border border-dashed border-white/10 bg-black/18 p-8">
-            <div className="space-y-4 text-center">
-              <div className="mx-auto grid size-24 place-items-center rounded-full border border-white/10 bg-white/5">
-                <Play className="ml-1 size-9 text-[#c7adff]" />
-              </div>
-              <div className="space-y-2">
-                <strong className="block text-lg font-medium text-white">{isGenerating ? "素材和音频生成后会立即出现在这里" : "没有可预览的分镜"}</strong>
-                <p className="max-w-md text-sm leading-6 text-muted">
-                  {isGenerating ? "系统会逐镜补全封面、字幕和旁白，无需等待整段项目全部完成。" : "先创建或选择一个分镜。"}
-                </p>
-              </div>
+              <strong className="block text-lg font-bold text-white">{isGenerating ? "素材和音频生成后会立即出现在这里" : "没有可预览的分镜"}</strong>
+              <p className="mt-2 max-w-sm text-sm leading-6 text-zinc-400">
+                {isGenerating ? "系统会逐镜补全封面、字幕和旁白。" : "先创建或选择一个分镜。"}
+              </p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     );
   }
 
   return (
-    <Card className="h-full min-h-0 rounded-[1.7rem] border-white/[0.06] bg-transparent">
-      <CardContent className="flex h-full min-h-0 flex-col gap-4 p-5">
-        <div className="flex items-center justify-between gap-4 rounded-[1.4rem] border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-          <div className="min-w-0">
-            <div className="mb-1 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/38">
-              <span>Preview Stage</span>
-              <span className="h-1 w-1 rounded-full bg-white/20" />
-              <span>{aspectRatio}</span>
-            </div>
-            <h2 className="truncate text-base font-semibold tracking-[-0.02em] text-white">分镜 {String(scene.index + 1).padStart(2, "0")} 预览</h2>
-          </div>
-          <div className="hidden items-center gap-2 rounded-full border border-white/[0.06] bg-black/20 px-3 py-1.5 text-xs text-muted md:flex">
-            <Type className="size-3.5 text-primary" />
-            {scene.timeline?.subtitles?.length ? `${scene.timeline.subtitles.length} 条字幕` : "字幕待生成"}
-          </div>
+    <section className="flex h-full min-h-0 items-center justify-center overflow-hidden bg-[#121212] p-4 md:p-6">
+      <div
+        className={`relative overflow-hidden rounded-lg bg-black shadow-[0_0_24px_rgba(0,0,0,0.5)] ${
+          aspectRatio === "9:16" ? "aspect-[9/16] h-full max-h-[716px] min-h-[400px] w-auto max-w-full" : "aspect-video w-full max-w-[960px]"
+        }`}
+      >
+        {scene.selected_video ? (
+          <video ref={videoRef} src={scene.selected_video.video_url} poster={scene.selected_video.thumbnail} className="absolute inset-0 h-full w-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 grid place-items-center bg-[#0b0b0b] text-sm text-zinc-400">当前分镜暂无素材</div>
+        )}
+
+        <div
+          className="absolute inset-x-6 bottom-[15%] z-10 text-center font-bold leading-[1.25] drop-shadow-[0_0_18px_rgba(0,0,0,0.85)]"
+          style={{
+            color: subtitleStyle.color,
+            WebkitTextStroke: `${subtitleStyle.stroke_width}px ${subtitleStyle.stroke_color}`,
+            fontSize: `${Math.min(subtitleStyle.font_size, 32)}px`,
+          }}
+        >
+          <span className="inline-block rounded-lg bg-black/60 px-4 py-2 backdrop-blur-sm">{scene.timeline?.subtitles?.[0]?.text ?? scene.text}</span>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-4">
-          <div className="grid min-h-0 flex-1 place-items-center rounded-[1.85rem] border border-white/[0.06] bg-[radial-gradient(circle_at_top,rgba(183,140,255,0.07),transparent_30%),linear-gradient(180deg,#09070f_0%,#06050b_100%)] p-5 md:p-7">
-            <div
-              className={`relative overflow-hidden rounded-[1.85rem] border border-white/[0.07] bg-black shadow-[0_28px_80px_rgba(0,0,0,0.4)] ${
-                aspectRatio === "9:16"
-                  ? "aspect-[9/16] h-full max-h-full w-auto max-w-full"
-                  : "aspect-video w-full max-w-full max-h-full"
-              }`}
-            >
-              {scene.selected_video ? (
-                <video
-                  ref={videoRef}
-                  src={scene.selected_video.video_url}
-                  poster={scene.selected_video.thumbnail}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="editor-grid grid h-full place-items-center text-sm text-white/70">当前分镜暂无素材</div>
-              )}
-
-              <div
-                className="absolute inset-x-[9%] bottom-[11%] text-center font-semibold leading-[1.3] drop-shadow-[0_8px_24px_rgba(0,0,0,0.75)]"
-                style={{
-                  color: subtitleStyle.color,
-                  WebkitTextStroke: `${subtitleStyle.stroke_width}px ${subtitleStyle.stroke_color}`,
-                  fontSize: `${subtitleStyle.font_size}px`,
-                }}
+        <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/85 to-transparent p-4">
+          <div className="mb-3 h-1 rounded-full bg-white/20">
+            <div className="h-full w-[35%] rounded-full bg-[#1ed760]" />
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="w-20 font-mono text-xs text-zinc-300">00:03 / 00:45</span>
+            <div className="flex items-center gap-5">
+              <button type="button" disabled={!canGoPrevious} onClick={onPreviousScene} className="text-white transition hover:text-[#1ed760] disabled:opacity-35">
+                <SkipBack className="size-5" />
+              </button>
+              <button
+                type="button"
+                disabled={!scene.selected_video}
+                onClick={() => void togglePlayback()}
+                className="grid size-14 place-items-center rounded-full bg-[#1ed760] text-black shadow-[0_0_24px_rgba(30,215,96,0.28)] transition hover:scale-105 disabled:opacity-50"
               >
-                {scene.timeline?.subtitles?.[0]?.text ?? scene.text}
-              </div>
+                {isPlaying ? <Pause className="size-7" /> : <Play className="ml-1 size-7" />}
+              </button>
+              <button type="button" disabled={!canGoNext} onClick={onNextScene} className="text-white transition hover:text-[#1ed760] disabled:opacity-35">
+                <SkipForward className="size-5" />
+              </button>
             </div>
-          </div>
-
-          <div className="shrink-0 rounded-[1.45rem] border border-white/[0.06] bg-white/[0.02] p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2">
-                <Button type="button" size="sm" variant="outline" className="border-white/[0.08] bg-white/[0.03]" disabled={!canGoPrevious} onClick={onPreviousScene}>
-                  <SkipBack className="size-4" />
-                  上一镜
-                </Button>
-                <Button type="button" size="sm" className="min-w-[88px]" disabled={!scene.selected_video} onClick={() => void togglePlayback()}>
-                  {isPlaying ? <Pause className="size-4" /> : <Play className="size-4" />}
-                  {isPlaying ? "暂停" : "播放"}
-                </Button>
-                <Button type="button" size="sm" variant="outline" className="border-white/[0.08] bg-white/[0.03]" disabled={!canGoNext} onClick={onNextScene}>
-                  <SkipForward className="size-4" />
-                  下一镜
-                </Button>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted">
-                <Volume2 className="size-4 text-[#c7adff]" />
-                {scene.audio_url ? "音频已同步到自定义播控" : "配音生成中"}
-              </div>
-              {scene.audio_url ? <audio ref={audioRef} className="hidden" src={`${API_ORIGIN}${scene.audio_url}`} /> : null}
-            </div>
+            <button type="button" className="grid w-20 justify-end text-white transition hover:text-[#1ed760]">
+              <Maximize className="size-5" />
+            </button>
           </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {scene.audio_url ? <audio ref={audioRef} className="hidden" src={`${API_ORIGIN}${scene.audio_url}`} /> : null}
+      </div>
+    </section>
   );
 }

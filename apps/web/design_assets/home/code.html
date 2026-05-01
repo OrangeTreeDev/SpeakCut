@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SpeakCut - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#4a4949",
+                        "tertiary-fixed": "#ffdbcf",
+                        "separator": "#b3b3b3",
+                        "secondary-fixed": "#e5e2e1",
+                        "outline-variant": "#3c4a3c",
+                        "on-primary-fixed": "#002108",
+                        "text-near-white": "#cbcbcb",
+                        "text-secondary": "#b3b3b3",
+                        "primary-container": "#1ed760",
+                        "on-secondary-fixed-variant": "#474646",
+                        "surface-container-lowest": "#081008",
+                        "near-black": "#121212",
+                        "text-warning": "#ffa42b",
+                        "surface-bright": "#333b32",
+                        "text-base": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "surface-container": "#192219",
+                        "surface-container-highest": "#2e372e",
+                        "outline": "#859583",
+                        "primary-fixed": "#69ff89",
+                        "secondary": "#c8c6c5",
+                        "mid-dark": "#1f1f1f",
+                        "mid-card": "#272727",
+                        "text-negative": "#f3727f",
+                        "on-error-container": "#ffdad6",
+                        "dark-card": "#252525",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-tertiary-fixed": "#380d00",
+                        "border-light": "#7c7c7c",
+                        "on-primary-container": "#005721",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "border-gray": "#4d4d4d",
+                        "text-announcement": "#539df5",
+                        "on-primary": "#003913",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#bbcbb8",
+                        "inverse-on-surface": "#2a3329",
+                        "background": "#0d150d",
+                        "tertiary": "#ffccbb",
+                        "surface-dim": "#0d150d",
+                        "inverse-primary": "#006e2c",
+                        "on-surface": "#dce5d8",
+                        "on-tertiary-container": "#793820",
+                        "on-tertiary-fixed-variant": "#73341c",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "dark-surface": "#181818",
+                        "surface-variant": "#2e372e",
+                        "on-secondary": "#313030",
+                        "inverse-surface": "#dce5d8",
+                        "surface-container-low": "#151e15",
+                        "tertiary-container": "#ffa585",
+                        "on-tertiary": "#571f08",
+                        "on-primary-fixed-variant": "#00531f",
+                        "primary": "#4cf479",
+                        "on-background": "#dce5d8",
+                        "text-light": "#fdfdfd",
+                        "green-accent-alt": "#1db954",
+                        "surface": "#0d150d",
+                        "surface-tint": "#34e36a",
+                        "primary-fixed-dim": "#34e36a",
+                        "surface-container-high": "#232c23",
+                        "on-secondary-container": "#bab8b7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "player-height": "90px",
+                        "xs": "4px",
+                        "sidebar-width": "240px",
+                        "base": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "section-title": ["Plus Jakarta Sans"],
+                        "nav-active": ["Plus Jakarta Sans"],
+                        "nav-inactive": ["Plus Jakarta Sans"],
+                        "body-bold": ["Plus Jakarta Sans"],
+                        "micro": ["Plus Jakarta Sans"],
+                        "metadata": ["Plus Jakarta Sans"],
+                        "small-tag": ["Plus Jakarta Sans"],
+                        "feature-heading": ["Plus Jakarta Sans"],
+                        "button-label-uppercase": ["Plus Jakarta Sans"],
+                        "body-standard": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "section-title": ["24px", { "lineHeight": "normal", "fontWeight": "700" }],
+                        "nav-active": ["14px", { "lineHeight": "normal", "fontWeight": "700" }],
+                        "nav-inactive": ["14px", { "lineHeight": "normal", "fontWeight": "400" }],
+                        "body-bold": ["16px", { "lineHeight": "normal", "fontWeight": "700" }],
+                        "micro": ["10px", { "lineHeight": "normal", "fontWeight": "400" }],
+                        "metadata": ["14px", { "lineHeight": "normal", "fontWeight": "400" }],
+                        "small-tag": ["12px", { "lineHeight": "1.5", "fontWeight": "700" }],
+                        "feature-heading": ["18px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "button-label-uppercase": ["14px", { "lineHeight": "1.0", "letterSpacing": "1.5px", "fontWeight": "700" }],
+                        "body-standard": ["16px", { "lineHeight": "normal", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #121212; color: #ffffff; }
+        .inset-shadow-input { box-shadow: inset 0 0 0 1px #7c7c7c, inset 0 2px 4px rgba(0,0,0,0.5); }
+        .inset-shadow-input:focus-within { box-shadow: inset 0 0 0 1px #ffffff, inset 0 2px 4px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="font-body-standard text-body-standard antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col bg-[#000000] h-screen w-64 fixed left-0 top-0 p-4 z-40">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[#1ed760]" data-icon="movie_edit">movie_edit</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-white tracking-tighter">SpeakCut</h1>
+<p class="font-micro text-micro text-text-secondary">Pro Production</p>
+</div>
+</div>
+<button class="bg-[#1ed760] text-black font-button-label-uppercase text-button-label-uppercase rounded-full py-3 px-6 mb-8 hover:opacity-90 scale-95 active:scale-90 transition-transform w-full text-center">
+            New Project
+        </button>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-3 text-white font-bold bg-zinc-800 rounded-full px-4 py-2 font-nav-active text-nav-active" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+                Home
+            </a>
+<a class="flex items-center gap-3 text-zinc-400 font-medium hover:text-white px-4 py-2 transition-colors hover:bg-zinc-800/50 rounded-full font-nav-inactive text-nav-inactive" href="#">
+<span class="material-symbols-outlined" data-icon="video_library">video_library</span>
+                Projects
+            </a>
+</div>
+<div class="mt-auto pt-4">
+<button class="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors cursor-pointer active:opacity-80 w-full px-4 py-2 hover:bg-zinc-800/50 rounded-full">
+<img alt="User Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_E-LG2405g45zhse1ATiQsrnH5PwrvpiDMLek7faUy2l5THy-_l60Ruhx6431QXdqhei4MZ4CZPs2ZhPufrCoAt7bIL0-6AnNqYD7exJ4fwD5yENdrgllW8rRAIsUpqh-BXwp0k5nryouxq4gRw2qHy6aqZzxBRxsQPCKM6DMB546BqRTrHq4wI2wFPvxR7XIKoF_vLeLXfVyHMTuqic_cFVt8af_UzaPFilEmuHIGooluimjhAXepsjfgP0njBKXSOXP4h0ksTA"/>
+<span class="font-nav-active text-nav-active text-white">Alex Doe</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- Canvas -->
+<main class="flex-1 p-8 pb-32 mt-4">
+<!-- NarraClip Studio Section -->
+<section class="mb-12 max-w-4xl">
+<h2 class="font-section-title text-section-title text-text-base mb-6">NarraClip Studio</h2>
+<div class="bg-dark-surface rounded-lg p-6 shadow-[0px_8px_24px_rgba(0,0,0,0.5)]">
+<div class="mb-4">
+<label class="sr-only" for="script-input">Enter your script</label>
+<textarea class="w-full bg-mid-dark rounded-lg p-4 text-text-light font-body-standard text-body-standard inset-shadow-input outline-none resize-none placeholder:text-text-secondary" id="script-input" placeholder="Paste your script or start typing here to generate your video..." rows="6"></textarea>
+</div>
+<div class="flex justify-between items-center mt-4">
+<div class="flex gap-2">
+<button class="bg-mid-dark text-text-secondary hover:text-text-light px-4 py-2 rounded-full font-metadata text-metadata transition-colors flex items-center gap-2 px-5"><div class="flex flex-col items-start leading-tight">
+<span class="text-[10px] text-text-secondary uppercase tracking-wider">Aspect Ratio</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="aspect_ratio">aspect_ratio</span>
+<span class="text-white">9:16</span>
+<span class="material-symbols-outlined text-xs text-text-secondary">expand_more</span>
+</div>
+</div></button>
+<button class="bg-mid-dark text-text-secondary hover:text-text-light px-4 py-2 rounded-full font-metadata text-metadata transition-colors flex items-center gap-2 px-5"><div class="flex flex-col items-start leading-tight">
+<span class="text-[10px] text-text-secondary uppercase tracking-wider">Voice</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="mic">mic</span>
+<span class="text-white">清萌青年</span>
+<span class="material-symbols-outlined text-xs text-text-secondary">expand_more</span>
+</div>
+</div></button>
+</div>
+<button class="bg-primary-container text-near-black font-button-label-uppercase text-button-label-uppercase px-8 py-3 rounded-full hover:bg-green-accent-alt transition-colors shadow-[0_4px_14px_rgba(30,215,96,0.39)]">
+                            Create
+                        </button>
+</div>
+</div>
+</section>
+<!-- My Projects Section -->
+<section>
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-section-title text-section-title text-text-base">My Projects</h2>
+<a class="text-text-secondary hover:text-text-light font-nav-inactive text-nav-inactive flex items-center gap-1" href="#">
+                        View All <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Project Card 1 -->
+<div class="bg-dark-surface rounded-lg overflow-hidden group cursor-pointer hover:bg-mid-card transition-all duration-300 shadow-[0px_8px_8px_rgba(0,0,0,0.3)]">
+<div class="relative aspect-video">
+<img alt="Tech Review V1" class="w-full h-full object-cover" data-alt="A sleek, modern desk setup featuring a high-end camera, microphone, and laptop, bathed in moody cinematic lighting with neon blue and purple accents. The scene conveys a professional tech review environment, typical of a high-quality YouTube creator studio. The aesthetic is dark, premium, and focused on digital media production." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ2e2VQICYXpzrl2-JYsOzE2ccqTgUHAC2VKHe4gscwkhQdWfmGLG-245PL3O3R6srCbztb6kmPdQ-vkj9ptuuMMk_iIHlk_DfZlDV7nEmbpopuNthKGohqylGvXD_CUetP796cI3bivTFphCJVMSSveWSOWXqUmr2Y6Q29x5f5BHIvnP3tNo-rBMNOMoipN9SBzyNR3hdXiWCYy-LBv6_6_jM1pAPzLJqINyRklpUBDkMRv28p62BfQmgiI7zlCaZ9xpeYOAUjHo"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-near-black shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill">play_arrow</span>
+</button>
+</div>
+<span class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-text-light font-micro text-micro">04:23</span>
+</div>
+<div class="p-4">
+<h3 class="font-body-bold text-body-bold text-text-light mb-1 truncate">Tech Review V1 - Final</h3>
+<div class="flex items-center gap-3 text-text-secondary font-metadata text-metadata">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="4k">4k</span> 4K Ultra HD</span>
+<span>•</span>
+<span>2 hrs ago</span>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-dark-surface rounded-lg overflow-hidden group cursor-pointer hover:bg-mid-card transition-all duration-300 shadow-[0px_8px_8px_rgba(0,0,0,0.3)]">
+<div class="relative aspect-video">
+<img alt="Travel Vlog" class="w-full h-full object-cover" data-alt="A vibrant, stylized still from a travel vlog showing a bustling cyberpunk-style night market. Neon signs reflect off wet pavement, creating a moody, cinematic atmosphere. The visual aesthetic is highly saturated with deep blacks and bright pink/cyan highlights, suggesting a high-energy, professionally edited video clip." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjunfYpNhs0TZEwA_-xftRJqPs04vIVD9WroJ-IqEKVD_X6izJC87gGrvZ1Ag-FZjVjBiktGLFM_qdvhprtmKAeHMuJzm3qFoB8Qa8TCgC5WY58AAiHB1K8RrJYu-MRiHGqfAJt7GW20MsNW1duY08399sFSdhYaSg17xYoFz40FN0MAqw88MZMlUzSSoBuol-o_f3_uhD6wMESmrOgCu1Rmq4RVKEkX6cSqFgNKGqzEhscYqmy9sCgxW5E00JZVRppSRjD6-KP-k"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-near-black shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill">play_arrow</span>
+</button>
+</div>
+<span class="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-text-light font-micro text-micro">12:05</span>
+</div>
+<div class="p-4">
+<h3 class="font-body-bold text-body-bold text-text-light mb-1 truncate">Tokyo Night Walk - Draft</h3>
+<div class="flex items-center gap-3 text-text-secondary font-metadata text-metadata">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="hd">hd</span> 1080p</span>
+<span>•</span>
+<span>Yesterday</span>
+</div>
+</div>
+</div>
+<!-- Project Card 3 -->
+</div>
+</section>
+</main>
+</div>
+</body></html>

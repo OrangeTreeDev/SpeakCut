@@ -13,10 +13,10 @@ interface TimelineBarProps {
 
 export function TimelineBar({ scenes, activeSceneIndex, isGenerating, onSelect }: TimelineBarProps) {
   return (
-    <section className="glass panel-surface rounded-[1.75rem] p-4">
+    <section className="rounded-lg bg-[#181818] p-4 shadow-[0_0_24px_rgba(0,0,0,0.5)]">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="grid size-10 place-items-center rounded-[1rem] bg-white/6 text-[#c7adff]">
+          <div className="grid size-10 place-items-center rounded-full bg-[#1f1f1f] text-[#1ed760]">
             <Clock3 className="size-4" />
           </div>
           <div>
@@ -27,7 +27,7 @@ export function TimelineBar({ scenes, activeSceneIndex, isGenerating, onSelect }
         {isGenerating ? <Badge variant="outline">持续更新</Badge> : null}
       </div>
 
-      <div className="rounded-[1.35rem] border border-white/8 bg-[#08060f] p-4">
+      <div className="rounded-lg bg-[#1f1f1f] p-4 shadow-[inset_0_0_0_1px_#4d4d4d]">
         <div className="mb-3 flex items-center gap-8 px-2 text-[11px] text-muted">
           <span className="w-10">视频</span>
           <span>00:00</span>
@@ -52,13 +52,13 @@ export function TimelineBar({ scenes, activeSceneIndex, isGenerating, onSelect }
                     className={cn(
                       "flex h-8 items-center rounded-md border px-3 text-xs transition",
                       scene.index === activeSceneIndex
-                        ? "border-[#54d4ff] bg-[linear-gradient(90deg,#2f6f8c,#6ddcff)] text-[#02131c]"
-                        : "border-[#1c4d61] bg-[#0d3140] text-[#bcefff]",
+                        ? "border-[#1ed760] bg-[#1ed760] text-black"
+                        : "border-[#4d4d4d] bg-[#252525] text-[#cbcbcb]",
                     )}
                     style={{ width: `${Math.max(scene.duration_ms / 40, 170)}px` }}
                     onClick={() => onSelect(scene.index)}
                   >
-                    Scene_{scene.index + 1}.mp4
+                    分镜_{scene.index + 1}.mp4
                   </button>
                 ))}
               </div>
@@ -70,7 +70,7 @@ export function TimelineBar({ scenes, activeSceneIndex, isGenerating, onSelect }
                 {scenes.map((scene) => (
                   <div
                     key={`subtitle-${scene.index}`}
-                    className="h-5 rounded-md border border-[#48356d] bg-[#191227]"
+                    className="h-5 rounded-md bg-[#252525] shadow-[inset_0_0_0_1px_#4d4d4d]"
                     style={{ width: `${Math.max(scene.duration_ms / 45, 130)}px` }}
                   />
                 ))}
@@ -79,9 +79,9 @@ export function TimelineBar({ scenes, activeSceneIndex, isGenerating, onSelect }
 
             <div className="flex items-center gap-3">
               <span className="w-10 text-xs text-muted">音频</span>
-              <div className="flex h-8 items-center gap-1 rounded-md border border-[#5a2a49] bg-[#23111d] px-2">
+              <div className="flex h-8 items-center gap-1 rounded-md bg-[#252525] px-2 shadow-[inset_0_0_0_1px_#4d4d4d]">
                 {Array.from({ length: Math.max(scenes.length * 3, 12) }).map((_, index) => (
-                  <div key={index} className="w-5 border-r border-[#c27aaa]/70" style={{ height: `${8 + (index % 4) * 4}px` }} />
+                  <div key={index} className="w-5 border-r border-[#1ed760]/70" style={{ height: `${8 + (index % 4) * 4}px` }} />
                 ))}
               </div>
             </div>
