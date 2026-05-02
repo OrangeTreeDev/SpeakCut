@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.core.database import SessionLocal, get_db
 from app.models import ExportJob, Project
 from app.schemas import (
+    DEFAULT_SUBTITLE_STYLE,
     ExportResponse,
     ProjectCreate,
     ProjectCreateResponse,
@@ -16,6 +17,7 @@ from app.schemas import (
     ProjectSummaryResponse,
     SceneResponse,
     SceneUpdate,
+    SceneVideoAssetUpdate,
     SceneVideoUpdate,
     SubtitleStyleUpdate,
     VoiceUpdate,
@@ -62,7 +64,7 @@ def serialize_project(project: Project) -> ProjectResponse:
         aspect_ratio=project.aspect_ratio,
         voice_id=project.voice_id,
         total_duration_ms=project.total_duration_ms,
-        subtitle_style=project.subtitle_style,
+        subtitle_style={**DEFAULT_SUBTITLE_STYLE, **(project.subtitle_style or {})},
         bgm=project.bgm,
         preview_url=project.preview_url,
         error_message=project.error_message,
@@ -159,6 +161,24 @@ def delete_project(project_id: str, db: Session = Depends(get_db)) -> Response:
     return Response(status_code=204)
 
 
+@router.post("/projects/{project_id}/regenerate", response_model=ProjectResponse)
+async def regenerate_project(
+    project_id: str,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+) -> ProjectResponse:
+    logger.info("regenerate_project_requested project_id=%s", project_id)
+    service = ProjectService(db)
+    project = service.get_project(project_id)
+    if project is None:
+        logger.warning("regenerate_project_not_found project_id=%s", project_id)
+        raise HTTPException(status_code=404, detail="Project not found")
+    updated = service.prepare_project_regeneration(project)
+    background_tasks.add_task(generate_project_in_background, project.id)
+    logger.info("regenerate_project_queued project_id=%s", project_id)
+    return serialize_project(updated)
+
+
 @router.patch("/projects/{project_id}/scenes/{scene_index}", response_model=ProjectResponse)
 async def update_scene(project_id: str, scene_index: int, payload: SceneUpdate, db: Session = Depends(get_db)) -> ProjectResponse:
     logger.info("update_scene_requested project_id=%s scene_index=%s", project_id, scene_index)
@@ -170,8 +190,13 @@ async def update_scene(project_id: str, scene_index: int, payload: SceneUpdate, 
     try:
         updated = await service.update_scene_text(project, scene_index, payload.text)
     except ValueError as exc:
+        db.rollback()
         logger.warning("update_scene_failed project_id=%s scene_index=%s reason=%s", project_id, scene_index, exc)
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except Exception as exc:
+        db.rollback()
+        logger.exception("update_scene_failed project_id=%s scene_index=%s", project_id, scene_index)
+        raise HTTPException(status_code=502, detail=f"更新分镜失败：{exc}") from exc
     logger.info("update_scene_completed project_id=%s scene_index=%s", project_id, scene_index)
     return serialize_project(updated)
 
@@ -190,6 +215,23 @@ def update_scene_video(project_id: str, scene_index: int, payload: SceneVideoUpd
         logger.warning("update_scene_video_failed project_id=%s scene_index=%s reason=%s", project_id, scene_index, exc)
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     logger.info("update_scene_video_completed project_id=%s scene_index=%s", project_id, scene_index)
+    return serialize_project(updated)
+
+
+@router.put("/projects/{project_id}/scenes/{scene_index}/video-asset", response_model=ProjectResponse)
+def update_scene_video_asset(project_id: str, scene_index: int, payload: SceneVideoAssetUpdate, db: Session = Depends(get_db)) -> ProjectResponse:
+    logger.info("update_scene_video_asset_requested project_id=%s scene_index=%s", project_id, scene_index)
+    service = ProjectService(db)
+    project = service.get_project(project_id)
+    if project is None:
+        logger.warning("update_scene_video_asset_project_not_found project_id=%s", project_id)
+        raise HTTPException(status_code=404, detail="Project not found")
+    try:
+        updated = service.update_scene_video_asset(project, scene_index, payload.video.model_dump())
+    except ValueError as exc:
+        logger.warning("update_scene_video_asset_failed project_id=%s scene_index=%s reason=%s", project_id, scene_index, exc)
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    logger.info("update_scene_video_asset_completed project_id=%s scene_index=%s", project_id, scene_index)
     return serialize_project(updated)
 
 

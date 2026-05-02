@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { api } from "../lib/api";
-import type { Project } from "../lib/types";
+import type { Project, VideoAsset } from "../lib/types";
 
 interface ProjectState {
   project: Project | null;
@@ -13,7 +13,9 @@ interface ProjectState {
   loadProject: (projectId: string, options?: { silent?: boolean }) => Promise<void>;
   setActiveSceneIndex: (index: number) => void;
   saveSceneText: (projectId: string, sceneIndex: number, text: string) => Promise<void>;
+  regenerateProject: (projectId: string) => Promise<void>;
   switchVideo: (projectId: string, sceneIndex: number, videoId: number) => Promise<void>;
+  switchVideoAsset: (projectId: string, sceneIndex: number, video: VideoAsset) => Promise<void>;
   updateSubtitleStyle: (projectId: string, style: Project["subtitle_style"]) => Promise<void>;
   switchVoice: (projectId: string, voiceId: string) => Promise<void>;
   exportProject: (projectId: string) => Promise<void>;
@@ -53,11 +55,31 @@ export const useProjectStore = create<ProjectState>((set) => ({
     set({ activeSceneIndex: index });
   },
   async saveSceneText(projectId, sceneIndex, text) {
-    const project = await api.updateScene(projectId, sceneIndex, text);
-    set({ project });
+    set({ error: null });
+    try {
+      const project = await api.updateScene(projectId, sceneIndex, text);
+      set({ project });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : "更新分镜失败" });
+      throw error;
+    }
+  },
+  async regenerateProject(projectId) {
+    set({ error: null });
+    try {
+      const project = await api.regenerateProject(projectId);
+      set({ project });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : "重新生成失败" });
+      throw error;
+    }
   },
   async switchVideo(projectId, sceneIndex, videoId) {
     const project = await api.updateSceneVideo(projectId, sceneIndex, videoId);
+    set({ project });
+  },
+  async switchVideoAsset(projectId, sceneIndex, video) {
+    const project = await api.updateSceneVideoAsset(projectId, sceneIndex, video);
     set({ project });
   },
   async updateSubtitleStyle(projectId, style) {

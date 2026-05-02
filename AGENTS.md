@@ -23,6 +23,8 @@ Main stack:
 - `apps/api/app/models.py`: SQLAlchemy models.
 - `apps/api/app/schemas.py`: Pydantic response/request models.
 - `apps/api/tests`: backend tests.
+- `apps/web/src/pages`: page entry points only.
+- `apps/web/src/components`: reusable UI split into page components, common components, and shadcn components.
 - `storage`: generated audio, downloaded videos, exports, previews, and cached LLM output.
 - `assets`: screenshots and UI reference assets.
 
@@ -130,8 +132,11 @@ Never commit real API keys, `.env.local`, database files, generated media, or do
 
 - API client code lives in `apps/web/src/lib/api.ts`.
 - Shared project state lives in `apps/web/src/store/projectStore.ts`.
-- Route pages live in `apps/web/src/pages`.
-- Reusable UI components live in `apps/web/src/components`.
+- Route pages live in `apps/web/src/pages` and should stay thin. They wire route params, store actions, and layout composition, but should not contain substantial feature logic.
+- Reusable UI components live in `apps/web/src/components` and should be split by responsibility:
+  - `components/editor`, `components/home`, `components/project`: page-scoped components used by a single page or workflow.
+  - `components/ui`: shadcn-style primitive components only.
+  - top-level components in `components/`: shared components used across multiple pages.
 - Use existing UI primitives and local styling patterns before adding new abstractions.
 - Use lucide-react icons for buttons where suitable.
 - Keep operational screens dense and task-focused; do not add marketing-style landing sections to app workflows.

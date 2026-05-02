@@ -1,16 +1,18 @@
-import { Download, Plus, RefreshCw, Save } from "lucide-react";
+import { Download, Plus, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
 interface EditorTopBarProps {
   apiOrigin: string;
   exportUrl: string | null;
+  projectStatus: string;
   isExporting: boolean;
   isGenerating: boolean;
   onExport: () => void;
 }
 
-export function EditorTopBar({ apiOrigin, exportUrl, isExporting, isGenerating, onExport }: EditorTopBarProps) {
+export function EditorTopBar({ apiOrigin, exportUrl, projectStatus, isExporting, isGenerating, onExport }: EditorTopBarProps) {
+  const canExport = projectStatus === "ready" && !isGenerating && !isExporting;
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b border-white/[0.05] bg-[#121212] px-4 md:justify-end md:px-6">
       <div className="flex items-center gap-3 lg:hidden">
@@ -28,30 +30,25 @@ export function EditorTopBar({ apiOrigin, exportUrl, isExporting, isGenerating, 
           </Link>
         </Button>
 
-        {exportUrl ? (
-          <Button asChild variant="outline" size="sm" className="hidden h-11 rounded-full border-white/20 bg-transparent px-5 font-bold text-white hover:bg-white/[0.08] md:inline-flex">
+        {exportUrl && projectStatus === "ready" ? (
+          <Button asChild size="sm" className="h-11 min-w-[136px] rounded-full bg-[#1ed760] px-7 font-bold text-black shadow-[0_0_24px_rgba(30,215,96,0.18)] hover:bg-[#34e36a]">
             <a href={`${apiOrigin}${exportUrl}`} target="_blank" rel="noreferrer">
-              <Save className="size-4" />
-              保存
+              <Download className="size-4" />
+              下载
             </a>
           </Button>
         ) : (
-          <Button type="button" variant="outline" size="sm" className="hidden h-11 rounded-full border-white/20 bg-transparent px-5 font-bold text-white hover:bg-white/[0.08] md:inline-flex">
-            <Save className="size-4" />
-            保存
+          <Button
+            type="button"
+            size="sm"
+            disabled={!canExport}
+            className="h-11 min-w-[136px] rounded-full bg-[#1ed760] px-7 font-bold text-black shadow-[0_0_24px_rgba(30,215,96,0.18)] hover:bg-[#34e36a]"
+            onClick={onExport}
+          >
+            {isExporting ? <RefreshCw className="size-4 animate-spin" /> : <Download className="size-4" />}
+            {isExporting ? "导出中" : "导出"}
           </Button>
         )}
-
-        <Button
-          type="button"
-          size="sm"
-          disabled={isGenerating || isExporting}
-          className="h-11 min-w-[136px] rounded-full bg-[#1ed760] px-7 font-bold text-black shadow-[0_0_24px_rgba(30,215,96,0.18)] hover:bg-[#34e36a]"
-          onClick={onExport}
-        >
-          {isExporting ? <RefreshCw className="size-4 animate-spin" /> : <Download className="size-4" />}
-          {isExporting ? "导出中" : "导出"}
-        </Button>
       </div>
     </header>
   );

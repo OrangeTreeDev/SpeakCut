@@ -1,5 +1,5 @@
 import { Filter } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { KeyboardEvent } from "react";
 import type { Scene } from "../lib/types";
 import { cn } from "../lib/utils";
@@ -17,31 +17,37 @@ interface SceneListProps {
 export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, onSaveText }: SceneListProps) {
   const [editingSceneIndex, setEditingSceneIndex] = useState<number | null>(null);
   const [draftText, setDraftText] = useState("");
+  const [showFailedOnly, setShowFailedOnly] = useState(false);
+  const failedSceneCount = scenes.filter((scene) => !scene.selected_video || !scene.audio_url).length;
+  const visibleScenes = showFailedOnly ? scenes.filter((scene) => !scene.selected_video || !scene.audio_url) : scenes;
 
-  useEffect(() => {
-    if (editingSceneIndex === null) {
-      return;
-    }
-    const editingScene = scenes.find((scene) => scene.index === editingSceneIndex);
-    setDraftText(editingScene?.text ?? "");
-  }, [editingSceneIndex, scenes]);
-
-  async function commitEdit(sceneIndex: number) {
+  async function persistSceneText(sceneIndex: number, text: string) {
     const scene = scenes.find((item) => item.index === sceneIndex);
     if (!scene) {
-      setEditingSceneIndex(null);
       return;
     }
 
-    const nextText = draftText.trim();
+    const nextText = text.trim();
     if (!nextText || nextText === scene.text) {
-      setEditingSceneIndex(null);
-      setDraftText(scene.text);
       return;
     }
 
     await onSaveText(sceneIndex, nextText);
+  }
+
+  async function commitEdit(sceneIndex: number) {
+    try {
+      await persistSceneText(sceneIndex, draftText);
+    } catch {
+      const scene = scenes.find((item) => item.index === sceneIndex);
+      setDraftText(scene?.text ?? "");
+    }
     setEditingSceneIndex(null);
+  }
+
+  function beginEdit(scene: Scene) {
+    setEditingSceneIndex(scene.index);
+    setDraftText(scene.text);
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>, sceneIndex: number) {
@@ -62,7 +68,16 @@ export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, on
     <aside className="hidden h-full min-h-0 flex-col border-r border-white/[0.05] bg-[#121212] md:flex">
       <div className="flex h-20 shrink-0 items-center justify-between border-b border-white/[0.05] bg-[#181818] px-5">
         <h2 className="text-xl font-bold text-white">分镜轨道</h2>
-        <button type="button" className="grid size-10 place-items-center rounded-full bg-[#1f1f1f] text-zinc-400 transition hover:bg-zinc-800 hover:text-white">
+        <button
+          type="button"
+          className={cn(
+            "grid size-10 place-items-center rounded-full bg-[#1f1f1f] transition hover:bg-zinc-800 hover:text-white",
+            showFailedOnly ? "text-[#1ed760]" : "text-zinc-400",
+          )}
+          onClick={() => setShowFailedOnly((current) => !current)}
+          title={showFailedOnly ? "显示全部分镜" : `筛选失败分镜${failedSceneCount ? `（${failedSceneCount}）` : ""}`}
+          aria-label={showFailedOnly ? "显示全部分镜" : "筛选失败分镜"}
+        >
           <Filter className="size-4" />
         </button>
       </div>
@@ -78,9 +93,14 @@ export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, on
             </div>
           ) : null}
 
-          {scenes.map((scene) => {
+          {showFailedOnly && scenes.length > 0 && visibleScenes.length === 0 ? (
+            <div className="rounded-lg bg-[#181818] p-5 text-sm text-zinc-400">当前没有失败分镜。</div>
+          ) : null}
+
+          {visibleScenes.map((scene) => {
             const isActive = activeSceneIndex === scene.index;
             const isEditing = editingSceneIndex === scene.index;
+            const isFailed = !scene.selected_video || !scene.audio_url;
 
             return (
               <section
@@ -96,6 +116,7 @@ export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, on
                   <div className="flex items-center gap-3">
                     <span className="text-xs font-bold uppercase tracking-[1.5px] text-zinc-400">分镜 {String(scene.index + 1).padStart(2, "0")}</span>
                     {isActive ? <span className="rounded-full bg-[#1ed760]/12 px-2 py-0.5 text-[10px] font-bold text-[#1ed760]">当前</span> : null}
+                    {isFailed ? <span className="rounded-full bg-[#f3727f]/12 px-2 py-0.5 text-[10px] font-bold text-[#f3727f]">失败</span> : null}
                   </div>
                   <span className="rounded-full bg-[#1f1f1f] px-2 py-0.5 font-mono text-[11px] text-zinc-300">
                     {scene.duration_ms > 0 ? `00:00 - 00:${String(Math.ceil(scene.duration_ms / 1000)).padStart(2, "0")}` : "生成中"}
@@ -140,8 +161,7 @@ export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, on
                     className={cn("block w-full rounded text-left text-sm leading-6 outline-none transition hover:text-white", isActive ? "text-zinc-100" : "text-zinc-400")}
                     onClick={() => onSelect(scene.index)}
                     onDoubleClick={() => {
-                      setEditingSceneIndex(scene.index);
-                      setDraftText(scene.text);
+                      beginEdit(scene);
                     }}
                   >
                     {scene.text}

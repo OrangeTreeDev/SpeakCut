@@ -45,7 +45,9 @@ export function CreateProjectPage() {
     setError(null);
     try {
       const response = await api.createProject({ text, aspect_ratio: aspectRatio, voice_id: voiceId });
-      navigate(`/projects/${response.project_id}`);
+      navigate(`/projects/${response.project_id}`, {
+        state: { entryMode: "create", projectStatus: response.status },
+      });
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "创建失败");
     } finally {

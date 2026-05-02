@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 from pathlib import Path
 from time import perf_counter
@@ -17,7 +16,7 @@ from app.schemas import DEFAULT_SUBTITLE_STYLE
 from app.services.files import ensure_storage_dirs, relative_url, text_key, write_json
 from app.services.llm import LLMService
 from app.services.pexels import PexelsService
-from app.services.timeline import build_global_timeline, build_scene_timeline
+from app.services.timeline import build_global_timeline, build_scene_timeline, select_best_video_for_duration
 from app.services.tts import TTSService
 
 logger = logging.getLogger("app.services.projects")
@@ -55,10 +54,8 @@ class ProjectService:
     async def _generate_project(self, project: Project) -> None:
         started_at = perf_counter()
         logger.info("project_generation_started project_id=%s", project.id)
-        # analysis = self.llm.analyze_narration(project.text)
-        analysis_path = self.settings.storage_path / "llm" / "1.json"
-        logger.info("project_generation_loading_analysis_from_file project_id=%s file=%s", project.id, analysis_path)
-        analysis = json.loads(analysis_path.read_text(encoding="utf-8"))
+        analysis = await asyncio.to_thread(self.llm.analyze_narration, project.text)
+        self._save_llm_result(project.text, "narration_analysis", analysis)
         scenes_payload = analysis.get("scenes", [])
         logger.info("project_generation_scenes_parsed project_id=%s scene_count=%s", project.id, len(scenes_payload))
         orientation = "portrait" if project.aspect_ratio == "9:16" else "landscape"
@@ -80,12 +77,21 @@ class ProjectService:
                 item["index"],
                 ",".join(item.get("keywords_en", [])),
             )
-            candidates = await self.pexels.search_videos(
-                query=" ".join(item.get("keywords_en", [])) or item.get("scene_description_en", ""),
-                orientation=orientation,
-            )
+            search_query = " ".join(item.get("keywords_en", [])) or item.get("scene_description_en", "")
+            try:
+                candidates = await self.pexels.search_videos(query=search_query, orientation=orientation)
+            except Exception as exc:
+                logger.warning(
+                    "scene_video_search_failed project_id=%s scene_index=%s query=%s reason=%s",
+                    project.id,
+                    item["index"],
+                    search_query,
+                    exc,
+                )
+                candidates = []
             audio_path = self.settings.storage_path / "generated" / "audio" / f"{project.id}_{item['index']}.mp3"
             audio = await self.tts.synthesize_scene(item["text"], project.voice_id, audio_path)
+            selected_video = select_best_video_for_duration(candidates, audio["duration_ms"])
             scene_dict = {
                 "index": item["index"],
                 "text": item["text"],
@@ -93,7 +99,7 @@ class ProjectService:
                 "keywords_en": item.get("keywords_en", []),
                 "sentiment": item.get("sentiment", "neutral"),
                 "scene_description_en": item.get("scene_description_en", ""),
-                "selected_video": candidates[0] if candidates else None,
+                "selected_video": selected_video,
                 "candidate_videos": candidates,
                 "audio": audio,
             }
@@ -169,6 +175,14 @@ class ProjectService:
             raise exc
         return project
 
+    def prepare_project_regeneration(self, project: Project) -> Project:
+        logger.info("project_regeneration_prepared project_id=%s", project.id)
+        project.status = "regenerating_all"
+        project.error_message = None
+        self.db.commit()
+        self.db.refresh(project)
+        return project
+
     def get_project(self, project_id: str) -> Project | None:
         stmt = select(Project).where(Project.id == project_id)
         return self.db.scalar(stmt)
@@ -190,7 +204,7 @@ class ProjectService:
         started_at = perf_counter()
         logger.info("scene_update_started project_id=%s scene_index=%s", project.id, scene_index)
         scene = self._require_scene(project.id, scene_index)
-        analysis = self.llm.analyze_single_scene(text, project.text)
+        analysis = await asyncio.to_thread(self.llm.analyze_single_scene, text, project.text)
         self._save_llm_result(text, f"scene_{scene_index}_analysis", analysis)
         scene.text = analysis.get("text", text)
         scene.keywords_zh = analysis.get("keywords_zh", [])
@@ -198,12 +212,11 @@ class ProjectService:
         scene.sentiment = analysis.get("sentiment", "neutral")
         scene.scene_description_en = analysis.get("scene_description_en", "")
         orientation = "portrait" if project.aspect_ratio == "9:16" else "landscape"
-        scene.candidate_videos = await self.pexels.search_videos(
-            " ".join(scene.keywords_en) or scene.scene_description_en, orientation
-        )
-        scene.selected_video = scene.candidate_videos[0] if scene.candidate_videos else None
+        search_query = " ".join(scene.keywords_en) or scene.scene_description_en or scene.text
+        scene.candidate_videos = await self.pexels.search_videos(search_query, orientation)
         audio_path = self.settings.storage_path / "generated" / "audio" / f"{project.id}_{scene_index}.mp3"
         audio = await self.tts.synthesize_scene(scene.text, project.voice_id, audio_path)
+        scene.selected_video = select_best_video_for_duration(scene.candidate_videos, audio["duration_ms"])
         scene.audio_url = str(audio_path)
         scene.word_boundaries = audio["word_boundaries"]
         scene.duration_ms = audio["duration_ms"]
@@ -281,6 +294,28 @@ class ProjectService:
         self.db.commit()
         self.db.refresh(project)
         logger.info("scene_video_update_completed project_id=%s scene_index=%s video_id=%s", project.id, scene_index, video_id)
+        return project
+
+    def update_scene_video_asset(self, project: Project, scene_index: int, video: dict) -> Project:
+        logger.info("scene_video_asset_update_started project_id=%s scene_index=%s video_id=%s", project.id, scene_index, video.get("id"))
+        scene = self._require_scene(project.id, scene_index)
+        scene.selected_video = video
+        existing = [item for item in scene.candidate_videos if item.get("id") != video.get("id")]
+        scene.candidate_videos = [video, *existing]
+        scene.timeline = build_scene_timeline(
+            {
+                "selected_video": scene.selected_video,
+                "audio": {
+                    "audio_path": scene.audio_url,
+                    "duration_ms": scene.duration_ms,
+                    "word_boundaries": scene.word_boundaries,
+                },
+            }
+        )
+        self._rebuild_project(project)
+        self.db.commit()
+        self.db.refresh(project)
+        logger.info("scene_video_asset_update_completed project_id=%s scene_index=%s video_id=%s", project.id, scene_index, video.get("id"))
         return project
 
     def queue_export(self, project: Project) -> ExportJob:

@@ -1,4 +1,10 @@
-from app.services.timeline import build_global_timeline, build_scene_timeline, build_subtitle_segments, select_video_strategy
+from app.services.timeline import (
+    build_global_timeline,
+    build_scene_timeline,
+    build_subtitle_segments,
+    select_best_video_for_duration,
+    select_video_strategy,
+)
 
 
 def test_build_subtitle_segments_groups_words() -> None:
@@ -21,6 +27,16 @@ def test_select_video_strategy() -> None:
     assert select_video_strategy(2, 5000)[0] == "loop"
 
 
+def test_select_best_video_for_duration_picks_closest_candidate() -> None:
+    videos = [
+        {"id": 1, "duration": 12},
+        {"id": 2, "duration": 4},
+        {"id": 3, "duration": 7},
+    ]
+
+    assert select_best_video_for_duration(videos, 6500) == {"id": 3, "duration": 7}
+
+
 def test_build_global_timeline() -> None:
     scene = {
         "selected_video": {"duration": 8, "video_url": "x"},
@@ -34,4 +50,3 @@ def test_build_global_timeline() -> None:
     timeline = build_global_timeline([{"index": 0, "timeline": scene_timeline}])
     assert timeline[0]["global_start_ms"] == 0
     assert timeline[0]["global_end_ms"] == 5000
-

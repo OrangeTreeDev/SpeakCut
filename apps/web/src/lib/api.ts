@@ -1,4 +1,4 @@
-import type { Project, ProjectSummary } from "./types";
+import type { Project, ProjectSummary, VideoAsset } from "./types";
 
 const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
 const API_BASE = `${API_ORIGIN}/api/v1`;
@@ -19,7 +19,17 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
   });
   if (!response.ok) {
-    throw new Error(await response.text());
+    const message = await response.text();
+    let errorMessage = message || response.statusText;
+    try {
+      const payload = JSON.parse(message) as { detail?: unknown };
+      if (typeof payload.detail === "string") {
+        errorMessage = payload.detail;
+      }
+    } catch {
+      // Keep the raw response body when the server does not return JSON.
+    }
+    throw new Error(errorMessage);
   }
   if (response.status === 204) {
     return undefined as T;
@@ -29,7 +39,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   createProject(payload: { text: string; aspect_ratio: "9:16" | "16:9"; voice_id: string }) {
-    return request<{ project_id: string }>("/projects", {
+    return request<{ project_id: string; status: string; estimated_time_sec: number }>("/projects", {
       method: "POST",
       body: JSON.stringify(payload),
     });
@@ -45,6 +55,11 @@ export const api = {
       method: "DELETE",
     });
   },
+  regenerateProject(projectId: string) {
+    return request<Project>(`/projects/${projectId}/regenerate`, {
+      method: "POST",
+    });
+  },
   updateScene(projectId: string, sceneIndex: number, text: string) {
     return request<Project>(`/projects/${projectId}/scenes/${sceneIndex}`, {
       method: "PATCH",
@@ -56,6 +71,16 @@ export const api = {
       method: "PUT",
       body: JSON.stringify({ video_id: videoId }),
     });
+  },
+  updateSceneVideoAsset(projectId: string, sceneIndex: number, video: VideoAsset) {
+    return request<Project>(`/projects/${projectId}/scenes/${sceneIndex}/video-asset`, {
+      method: "PUT",
+      body: JSON.stringify({ video }),
+    });
+  },
+  searchMaterials(query: string, orientation: "portrait" | "landscape", perPage = 8) {
+    const params = new URLSearchParams({ q: query, orientation, per_page: String(perPage) });
+    return request<{ videos: VideoAsset[] }>(`/materials/search?${params.toString()}`);
   },
   updateSubtitleStyle(projectId: string, style: Project["subtitle_style"]) {
     return request<Project>(`/projects/${projectId}/subtitle-style`, {

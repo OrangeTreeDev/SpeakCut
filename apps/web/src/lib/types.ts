@@ -46,10 +46,12 @@ export interface Project {
   voice_id: string;
   total_duration_ms: number;
   subtitle_style: {
+    font_family: string;
     font_size: number;
     color: string;
     stroke_color: string;
     stroke_width: number;
+    background_color: string;
   };
   preview_url: string | null;
   error_message: string | null;

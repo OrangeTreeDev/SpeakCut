@@ -47,6 +47,13 @@ def select_video_strategy(video_duration_sec: int, audio_duration_ms: int) -> tu
     return "loop", int(target_sec * 1000)
 
 
+def select_best_video_for_duration(videos: list[dict[str, Any]], audio_duration_ms: int) -> dict[str, Any] | None:
+    if not videos:
+        return None
+    target_sec = max(audio_duration_ms / 1000, 1)
+    return min(videos, key=lambda video: abs(float(video.get("duration", 0) or 0) - target_sec))
+
+
 def build_scene_timeline(scene: dict[str, Any]) -> dict[str, Any]:
     video = scene.get("selected_video") or {}
     strategy, end_ms = select_video_strategy(video.get("duration", 0), scene["audio"]["duration_ms"])
@@ -92,4 +99,3 @@ def build_global_timeline(scenes: list[dict[str, Any]]) -> list[dict[str, Any]]:
         )
         global_offset_ms += duration
     return timeline
-

@@ -44,7 +44,7 @@ def _ffmpeg_concat_line(path: Path) -> str:
 
 
 def _write_ass_file(path: Path, size: tuple[int, int], subtitles: list[dict[str, Any]], style: dict[str, Any]) -> None:
-    font_name = Path(get_settings().subtitle_font_path).stem
+    font_name = str(style.get("font_family") or Path(get_settings().subtitle_font_path).stem).split(",")[0].strip("\"' ")
     font_size = int(style["font_size"])
     outline = int(style["stroke_width"])
     primary = _ass_color(style["color"])

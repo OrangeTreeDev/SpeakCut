@@ -6,10 +6,12 @@ from pydantic import BaseModel, Field
 
 
 DEFAULT_SUBTITLE_STYLE = {
+    "font_family": "Noto Sans SC",
     "font_size": 48,
     "color": "#FFFFFF",
     "stroke_color": "#000000",
     "stroke_width": 2,
+    "background_color": "#000000",
 }
 
 
@@ -54,10 +56,12 @@ class VoiceUpdate(BaseModel):
 
 
 class SubtitleStyleUpdate(BaseModel):
+    font_family: str = Field(min_length=1, max_length=120)
     font_size: int = Field(ge=24, le=72)
     color: str = Field(min_length=4, max_length=16)
     stroke_color: str = Field(min_length=4, max_length=16)
     stroke_width: int = Field(ge=0, le=5)
+    background_color: str = Field(min_length=4, max_length=16)
 
 
 class VideoAsset(BaseModel):
@@ -67,6 +71,10 @@ class VideoAsset(BaseModel):
     duration: int
     width: int = 0
     height: int = 0
+
+
+class SceneVideoAssetUpdate(BaseModel):
+    video: VideoAsset
 
 
 class SceneResponse(BaseModel):
