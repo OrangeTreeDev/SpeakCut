@@ -14,11 +14,9 @@ SpeakCut 不是传统时间线剪辑软件，而是“文本到可编辑短视�
 
 ![首页：输入旁白并一键成片](assets/illustrate/screenshot/home.png)
 
-![项目库：查看生成状态、封面和时长](assets/illustrate/screenshot/project.png)
-
 ![编辑器：分镜轨道、竖屏预览、素材替换](assets/illustrate/screenshot/editor1.png)
 
-![编辑器：字幕与音频检查](assets/illustrate/screenshot/editor2.png)
+![项目库：查看生成状态、封面和时长](assets/illustrate/screenshot/project.png)
 
 ## 产品功能
 
@@ -101,15 +99,6 @@ make web
 make test-api
 make test-web
 make lint-web
-```
-
-## 目录速览
-
-```text
-apps/web      React 前端
-apps/api      FastAPI 后端
-storage       生成音频、素材缓存、导出文件
-assets        截图、技术图和字体资源
 ```
 
 ## 迭代计划
