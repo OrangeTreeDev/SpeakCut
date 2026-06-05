@@ -4,7 +4,7 @@
   "description": "Local CLI for generating SpeakCut short videos from narration text.",
   "type": "module",
   "bin": {
-    "speak-cut": "./dist/speak-cut.js"
+    "speak-cut": "dist/speak-cut.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
