@@ -9,12 +9,7 @@ coverage/
 htmlcov/
 .env.local
 .env.*.local
-storage/generated/
-storage/downloads/
-storage/exports/
-storage/previews/
-storage/llm/
-storage/projects/
+storage/
 apps/api/storage/
 .speak-cut/
 downloads/
