@@ -47,8 +47,9 @@ LLM_BASE_URL=https://openrouter.ai/api/v1
 LLM_API_KEY=...
 LLM_MODEL=openai/gpt-4o-mini
 PEXELS_API_KEY=...
-FFMPEG_BINARY=ffmpeg
 ```
+
+`ffmpeg` must be available on `PATH`. Set `FFMPEG_BINARY` only when using a custom executable path.
 
 TTS uses `edge-tts` and requires network access, but no separate API key.
 

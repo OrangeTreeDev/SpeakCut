@@ -10,6 +10,14 @@ SpeakCut 不是传统时间线剪辑软件，而是“文本到可编辑短视�
 - 真实素材：优先使用 Pexels 等真实视频素材，避免纯生成画面带来的质感不稳定和事实表达风险。
 - 轻松编辑：生成后仍保留分镜、素材、字幕、音频等结构化数据，用户可以逐镜替换素材、预览和导出。
 
+## 在线体验
+
+Railway 线上演示地址：
+
+https://speakcut-web-production.up.railway.app/
+
+当前线上环境受 Railway 实例资源限制，适合体验文本生成、分镜、素材、配音、字幕和编辑预览流程；视频导出会触发 FFmpeg 高负载渲染，可能因平台资源限制失败。完整导出建议使用本地 CLI 或更高规格的后端/worker 环境。
+
 ## 产品界面
 
 ![首页：输入旁白并一键成片](assets/illustrate/screenshot/home.png)
@@ -67,10 +75,11 @@ LLM_API_KEY=
 LLM_MODEL=
 PEXELS_API_KEY=
 PIXABAY_API_KEY=
-FFMPEG_BINARY=ffmpeg
 SUBTITLE_FONT_PATH=
 WEB_ORIGIN=http://127.0.0.1:5173
 ```
+
+`ffmpeg` 需要已安装并可从 `PATH` 直接执行。只有使用自定义 ffmpeg 路径时才需要设置 `FFMPEG_BINARY`。
 
 安装依赖：
 
@@ -117,11 +126,3 @@ npx speak-cut generate --text "输入一段旁白文本" --export
 ```
 
 要让外部用户安装后直接运行成功，需要先发布 `packages/speak-cut` 到 npm，使 `npx speak-cut` 可用。
-
-## 迭代计划
-
-- 生成级重构：把分镜规划、素材选择、字幕策略、失败恢复拆成可观测的生成阶段，支持局部重试。
-- Vercel 部署：前端接入 Vercel，后端保持独立服务，补齐跨域、静态资源和导出下载配置。
-- Skill 支持：为生成策略、素材检索、字幕样式、导出参数提供agent skill。
-- 视频自动剪辑：基于镜头内容和脚本文案自动裁剪、排序、转场和重定时。
-- 本地模型支持：桌面化，内置本地小模型，降低外部LLM服务依赖。
