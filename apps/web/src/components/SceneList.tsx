@@ -10,11 +10,12 @@ interface SceneListProps {
   scenes: Scene[];
   activeSceneIndex: number;
   isGenerating: boolean;
+  readOnly?: boolean;
   onSelect: (sceneIndex: number) => void;
   onSaveText: (sceneIndex: number, text: string) => Promise<void>;
 }
 
-export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, onSaveText }: SceneListProps) {
+export function SceneList({ scenes, activeSceneIndex, isGenerating, readOnly = false, onSelect, onSaveText }: SceneListProps) {
   const [editingSceneIndex, setEditingSceneIndex] = useState<number | null>(null);
   const [draftText, setDraftText] = useState("");
   const [showFailedOnly, setShowFailedOnly] = useState(false);
@@ -46,6 +47,9 @@ export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, on
   }
 
   function beginEdit(scene: Scene) {
+    if (readOnly) {
+      return;
+    }
     setEditingSceneIndex(scene.index);
     setDraftText(scene.text);
   }
@@ -161,7 +165,9 @@ export function SceneList({ scenes, activeSceneIndex, isGenerating, onSelect, on
                     className={cn("block w-full rounded text-left text-sm leading-6 outline-none transition hover:text-white", isActive ? "text-zinc-100" : "text-zinc-400")}
                     onClick={() => onSelect(scene.index)}
                     onDoubleClick={() => {
-                      beginEdit(scene);
+                      if (!readOnly) {
+                        beginEdit(scene);
+                      }
                     }}
                   >
                     {scene.text}

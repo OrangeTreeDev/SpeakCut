@@ -1,0 +1,3 @@
+display_name: SpeakCut Video
+short_description: Generate and export local short videos through the speak-cut npm CLI.
+default_prompt: Generate a local short video from my narration text with speak-cut, then return the project file, read-only preview HTML, and export path.

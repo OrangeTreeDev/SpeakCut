@@ -56,4 +56,6 @@ export interface Project {
   preview_url: string | null;
   error_message: string | null;
   scenes: Scene[];
+  export_file?: string | null;
+  project_file?: string | null;
 }

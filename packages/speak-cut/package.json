@@ -1,0 +1,31 @@
+{
+  "name": "speak-cut",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local CLI for generating SpeakCut short videos from narration text.",
+  "type": "module",
+  "bin": {
+    "speak-cut": "./dist/speak-cut.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:runtime": "node ./scripts/build-runtime.js",
+    "cli": "node ./dist/speak-cut.js",
+    "healthcheck": "node ./dist/speak-cut.js healthcheck",
+    "prepack": "npm run build && npm run build:runtime"
+  },
+  "files": [
+    "dist",
+    "runtime",
+    "assets",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.2"
+  },
+  "license": "UNLICENSED"
+}

@@ -17,18 +17,23 @@ Main stack:
 
 - `apps/web`: Vite React frontend.
 - `apps/api`: FastAPI backend.
+- `packages/speak-cut`: npm CLI wrapper used by agent skills. It calls the Python runtime through stdio and packages the static preview web build.
+- `skills/speakcut-video`: standard installable skill source for `npx skills add`.
 - `.agents/skills/ffmpeg-video-export`: project-level Codex skill for ffmpeg export design and debugging.
 - `apps/api/app/api/routes.py`: API endpoints and background task entry points.
 - `apps/api/app/services`: backend domain services for projects, LLM, TTS, media search, rendering, timelines, and files.
+- `apps/api/app/workflows/agent_bundle.py`: local agent workflow for project bundle, preview packaging, patching, and export.
+- `apps/api/scripts/speakcut.py`: stdio JSON entry point used by the npm CLI.
 - `apps/api/app/models.py`: SQLAlchemy models.
 - `apps/api/app/schemas.py`: Pydantic response/request models.
 - `apps/api/tests`: backend tests.
 - `apps/web/src/pages`: page entry points only.
 - `apps/web/src/components`: reusable UI split into page components, common components, and shadcn components.
-- `storage`: generated audio, downloaded videos, exports, previews, and cached LLM output.
+- `storage`: web/API generated audio, downloaded videos, exports, previews, and cached LLM output.
+- `projects`, `generated`, `downloads`, `exports`, `speakcut.db`: default local CLI runtime output when `speak-cut` is run from the current directory.
 - `assets`: screenshots and UI reference assets.
 
-Do not treat `storage`, `.venv`, `node_modules`, SQLite DB files, or generated media as source code.
+Do not treat `storage`, `projects`, `generated`, `downloads`, `exports`, `.speak-cut`, `.venv`, `node_modules`, SQLite DB files, or generated media as source code.
 
 ## Development Commands
 
@@ -84,6 +89,20 @@ npm run build:web
 npm run test:web
 ```
 
+Build the agent CLI:
+
+```bash
+npm --workspace speak-cut run build
+npm --workspace speak-cut run build:runtime
+```
+
+Run the local agent CLI:
+
+```bash
+npx speak-cut healthcheck
+npx speak-cut generate --text "..." --export
+```
+
 ## Local Runtime Notes
 
 - Backend runs on port `8000`.
@@ -91,6 +110,11 @@ npm run test:web
 - In development, Vite proxies `/api` and `/static` to `http://127.0.0.1:8000`.
 - Frontend API calls should default to relative same-origin paths. Only set `VITE_API_BASE_URL` for deployments where the API is on a separate origin.
 - Codespaces public port URLs can inject tunnel auth behavior. Prefer same-origin proxying during development.
+- Agent skill usage should call `npx speak-cut` through CLI flags or stdio JSON. Do not start FastAPI, Vite, or any local HTTP service for skill execution.
+- `speak-cut` defaults `STORAGE_ROOT` to the current working directory. Exported videos therefore land in `./exports`, project bundles in `./projects`, generated audio in `./generated`, downloaded media in `./downloads`, and SQLite state in `./speakcut.db`.
+- `SPEAKCUT_DATA_DIR` can override the default current-directory data root. `SPEAKCUT_CACHE_DIR` can override the default `./.speak-cut/cache`.
+- The static preview editor is read-only for users. User edit requests should be translated by the agent into skill patch operations, then applied through `speak-cut` and repackaged into HTML.
+- The skill/CLI workflow is online-only. Do not add or use `offline: true`, fake audio, local fixture video, or offline generation fallbacks.
 
 ## Environment And Secrets
 
@@ -102,10 +126,11 @@ Important variables:
 - `VITE_API_BASE_URL`: optional frontend API origin. Leave empty for same-origin proxy mode.
 - `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`: LLM provider configuration.
 - `PEXELS_API_KEY`, `PIXABAY_API_KEY`: media provider credentials.
+- `SPEAKCUT_DATA_DIR`, `SPEAKCUT_CACHE_DIR`: optional local CLI data/cache directory overrides.
 - `FFMPEG_BINARY`: ffmpeg executable path.
 - `SUBTITLE_FONT_PATH`: font file used for export subtitles.
 
-Never commit real API keys, `.env.local`, database files, generated media, or downloaded stock assets.
+Never commit real API keys, `.env.local`, database files, generated media, downloaded stock assets, or local CLI output directories.
 
 ## Backend Conventions
 
@@ -127,6 +152,19 @@ Never commit real API keys, `.env.local`, database files, generated media, or do
 - Generated audio should live under `storage/generated/audio`.
 - Downloaded source videos should live under `storage/downloads/videos`.
 - Final exports should live under `storage/exports` and be served through `/static`.
+- For `speak-cut` CLI runs, the equivalent default locations are current-directory `generated/audio`, `downloads/videos`, and `exports`.
+
+## Agent Skill And CLI Conventions
+
+- `skills/speakcut-video/SKILL.md` is the installable skill source. Keep it concise and focused on how agents should call the npm CLI.
+- `packages/speak-cut/src/speak-cut.ts` is the TypeScript CLI source. Rebuild with `npm --workspace speak-cut run build` after edits.
+- `packages/speak-cut/runtime` is generated by `npm --workspace speak-cut run build:runtime`. Do not hand-edit generated runtime copies; update source files under `apps/api` or `apps/web`, then rebuild.
+- The CLI must support both human-friendly flags and stdio JSON. Stdio JSON is the preferred protocol for agents.
+- The CLI must not call FastAPI over HTTP for skill workflows. It should spawn the Python stdio runtime directly.
+- The CLI should return JSON/NDJSON on stdout and send operational logs to stderr.
+- If a request includes `offline: true` or `--offline`, fail explicitly instead of silently falling back.
+- Preview packaging should use the compiled web build, not a Vite dev server.
+- For changes requested from a preview, use `patch` operations and regenerate preview/export as needed.
 
 ## Frontend Conventions
 
@@ -154,6 +192,13 @@ Before finishing frontend changes, run:
 
 ```bash
 cd apps/web && npm run lint
+```
+
+Before finishing CLI or skill changes, run:
+
+```bash
+npm --workspace speak-cut run build
+npx speak-cut healthcheck
 ```
 
 For full frontend tests:
