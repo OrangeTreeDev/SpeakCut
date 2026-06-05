@@ -101,6 +101,23 @@ make test-web
 make lint-web
 ```
 
+## Agent Skill 安装
+
+SpeakCut skill 遵循 Agent Skills 标准目录结构：`skills/speakcut-video/SKILL.md`。推送到 GitHub 后，可以像 Vercel skills 一样安装：
+
+```bash
+npx skills add https://github.com/OrangeTreeDev/SpeakCut --skill speakcut-video
+```
+
+Skill 会调用 npm CLI：
+
+```bash
+npx speak-cut healthcheck
+npx speak-cut generate --text "输入一段旁白文本" --export
+```
+
+要让外部用户安装后直接运行成功，需要先发布 `packages/speak-cut` 到 npm，使 `npx speak-cut` 可用。
+
 ## 迭代计划
 
 - 生成级重构：把分镜规划、素材选择、字幕策略、失败恢复拆成可观测的生成阶段，支持局部重试。

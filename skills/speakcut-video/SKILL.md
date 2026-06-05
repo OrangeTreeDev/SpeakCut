@@ -7,6 +7,16 @@ metadata:
 
 # SpeakCut Video
 
+## Install
+
+This skill is intended to be installed from the SpeakCut repository:
+
+```bash
+npx skills add https://github.com/OrangeTreeDev/SpeakCut --skill speakcut-video
+```
+
+The skill depends on the public `speak-cut` npm CLI. Agents should call it with `npx speak-cut`.
+
 ## Protocol
 
 Prefer the `speak-cut` npm CLI. Use `npx speak-cut` when the binary is not already installed.

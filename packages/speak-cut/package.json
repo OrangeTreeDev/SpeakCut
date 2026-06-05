@@ -1,7 +1,6 @@
 {
   "name": "speak-cut",
   "version": "0.1.0",
-  "private": true,
   "description": "Local CLI for generating SpeakCut short videos from narration text.",
   "type": "module",
   "bin": {
@@ -20,6 +19,21 @@
     "assets",
     "README.md"
   ],
+  "keywords": [
+    "speakcut",
+    "video",
+    "ffmpeg",
+    "agent-skill",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OrangeTreeDev/SpeakCut.git",
+    "directory": "packages/speak-cut"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18"
   },
@@ -27,5 +41,5 @@
     "@types/node": "^22.15.3",
     "typescript": "^5.8.2"
   },
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
