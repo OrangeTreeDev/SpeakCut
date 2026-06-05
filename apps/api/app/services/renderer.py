@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from app.core.config import get_settings
+from app.services.ffmpeg import resolve_ffmpeg_binary
 
 
 def _target_resolution(aspect_ratio: str) -> tuple[int, int]:
@@ -85,7 +86,7 @@ def _render_scene_part(
     duration_sec: float,
     size: tuple[int, int],
 ) -> None:
-    settings = get_settings()
+    ffmpeg_binary = resolve_ffmpeg_binary()
     video_filter = (
         f"scale={size[0]}:{size[1]}:force_original_aspect_ratio=increase,"
         f"crop={size[0]}:{size[1]},setsar=1,"
@@ -94,7 +95,7 @@ def _render_scene_part(
     )
     subprocess.run(
         [
-            settings.ffmpeg_binary,
+            ffmpeg_binary,
             "-y",
             "-stream_loop",
             "-1",
@@ -139,7 +140,7 @@ def render_project(
     output_path: Path,
 ) -> str:
     size = _target_resolution(aspect_ratio)
-    settings = get_settings()
+    ffmpeg_binary = resolve_ffmpeg_binary()
     parts_dir = output_path.parent / f"{project_id}_parts"
     parts_dir.mkdir(parents=True, exist_ok=True)
     part_paths: list[Path] = []
@@ -168,7 +169,7 @@ def render_project(
     concat_file.write_text("".join(_ffmpeg_concat_line(path) for path in part_paths), encoding="utf-8")
     subprocess.run(
         [
-            settings.ffmpeg_binary,
+            ffmpeg_binary,
             "-y",
             "-f",
             "concat",

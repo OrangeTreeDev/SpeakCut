@@ -4,7 +4,6 @@ from __future__ import annotations
 import asyncio
 import json
 import os
-import shutil
 import sys
 from pathlib import Path
 from typing import Any
@@ -21,6 +20,7 @@ if str(API_ROOT) not in sys.path:
     sys.path.insert(0, str(API_ROOT))
 
 from app.core.database import Base, SessionLocal, engine, ensure_project_error_message_column
+from app.services.ffmpeg import check_ffmpeg
 from app.services.files import ensure_storage_dirs
 from app.workflows.agent_bundle import (
     apply_patch_ops,
@@ -55,15 +55,17 @@ def _init_storage() -> None:
 
 def _healthcheck() -> dict[str, Any]:
     _init_storage()
+    ffmpeg = check_ffmpeg()
     return {
         "type": "result",
-        "status": "ok",
+        "status": "ok" if ffmpeg["ok"] else "failed",
         "checks": {
             "python": True,
-            "ffmpeg": shutil.which("ffmpeg") is not None,
+            "ffmpeg": bool(ffmpeg["ok"]),
             "storage": True,
             "sqlite": True,
         },
+        "ffmpeg": ffmpeg,
     }
 
 

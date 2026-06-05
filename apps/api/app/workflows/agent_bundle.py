@@ -6,7 +6,9 @@ import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
+import httpx
 from sqlalchemy.orm import Session
 
 from app.core.config import REPO_ROOT, get_settings
@@ -88,7 +90,7 @@ def export_bundle(project_file: Path) -> Path:
         audio_url = scene.get("audio_url")
         if not selected_video or not audio_url:
             continue
-        local_video_path = _resolve_bundle_path(bundle_dir, selected_video["video_url"])
+        local_video_path = _ensure_bundle_video_path(bundle_dir, scene)
         local_audio_path = _resolve_bundle_path(bundle_dir, audio_url)
         prepared_scenes.append(
             {
@@ -226,7 +228,19 @@ def _project_bundle_payload(project: Project, bundle_dir: Path) -> dict[str, Any
         selected_video = next_scene.get("selected_video")
         if selected_video and selected_video.get("video_url"):
             selected_video = dict(selected_video)
-            selected_video["video_url"] = _copy_into_bundle(bundle_dir, Path(selected_video["video_url"]), "media/videos")
+            source_video_url = str(selected_video["video_url"])
+            selected_video.setdefault("source_url", source_video_url)
+            local_video_path = selected_video.get("local_video_path")
+            if local_video_path and Path(str(local_video_path)).exists():
+                selected_video["local_video_path"] = _copy_into_bundle(bundle_dir, Path(str(local_video_path)), "media/videos")
+            elif not _is_remote_url(source_video_url) and Path(source_video_url).exists():
+                bundled_path = _copy_into_bundle(bundle_dir, Path(source_video_url), "media/videos")
+                selected_video["video_url"] = bundled_path
+                selected_video["local_video_path"] = bundled_path
+            else:
+                cached_video_path = get_settings().storage_path / "downloads" / "videos" / f"{project.id}_{scene['index']}.mp4"
+                if cached_video_path.exists():
+                    selected_video["local_video_path"] = _copy_into_bundle(bundle_dir, cached_video_path, "media/videos")
             if selected_video.get("thumbnail") and Path(str(selected_video["thumbnail"])).exists():
                 selected_video["thumbnail"] = _copy_into_bundle(bundle_dir, Path(selected_video["thumbnail"]), "media/thumbnails")
             next_scene["selected_video"] = selected_video
@@ -293,6 +307,8 @@ def _preview_project_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def _preview_relative_path(path: str) -> str:
+    if _is_remote_url(path):
+        return path
     candidate = Path(path)
     if candidate.is_absolute():
         return path
@@ -314,6 +330,38 @@ def _preview_web_dist_dir() -> Path:
 def _resolve_bundle_path(bundle_dir: Path, path: str) -> Path:
     candidate = Path(path)
     return candidate if candidate.is_absolute() else bundle_dir / candidate
+
+
+def _ensure_bundle_video_path(bundle_dir: Path, scene: dict[str, Any]) -> Path:
+    selected_video = scene["selected_video"]
+    for key in ("local_video_path", "video_url"):
+        value = selected_video.get(key)
+        if value and not _is_remote_url(str(value)):
+            path = _resolve_bundle_path(bundle_dir, str(value))
+            if path.exists():
+                selected_video["local_video_path"] = str(path.relative_to(bundle_dir)) if path.is_relative_to(bundle_dir) else str(path)
+                return path
+
+    video_url = selected_video.get("video_url") or selected_video.get("source_url")
+    if not video_url or not _is_remote_url(str(video_url)):
+        raise FileNotFoundError(f"Scene {scene.get('index')} has no local video file and no remote video URL")
+
+    selected_video.setdefault("source_url", str(video_url))
+    target = bundle_dir / "media" / "videos" / f"scene_{int(scene.get('index', 0)):04d}.mp4"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if not target.exists():
+        with httpx.stream("GET", str(video_url), timeout=60.0, follow_redirects=True) as response:
+            response.raise_for_status()
+            with target.open("wb") as file:
+                for chunk in response.iter_bytes():
+                    file.write(chunk)
+    selected_video["local_video_path"] = str(target.relative_to(bundle_dir))
+    return target
+
+
+def _is_remote_url(value: str) -> bool:
+    parsed = urlparse(value)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
 
 
 def _word_boundaries(text: str, duration_ms: int) -> list[dict[str, Any]]:
