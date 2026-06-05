@@ -1,4 +1,0 @@
-interface:
-  display_name: "FFmpeg Video Export"
-  short_description: "Build reliable ffmpeg video export pipelines"
-  default_prompt: "Use $ffmpeg-video-export to design or fix an ffmpeg-based video export pipeline."

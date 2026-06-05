@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "speakcut-video": {
+      "source": "OrangeTreeDev/SpeakCut",
+      "sourceType": "github",
+      "skillPath": "skills/speakcut-video/SKILL.md",
+      "computedHash": "c192f1cc381af1aff07717a5500408f09a03128f324149d0d7acf243c7108ff9"
+    }
+  }
+}
